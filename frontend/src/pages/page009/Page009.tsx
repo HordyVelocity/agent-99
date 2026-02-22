@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import { useVoiceSessionV2 } from "./useVoiceSessionV2"
+import { calculateScoreLocal } from "../../lib/scoring"
 
 const QUESTIONS = [
   {id:"q1",label:"What type of business structure?",options:["Sole Trader","Company","Trust","Partnership"]},
@@ -19,7 +20,6 @@ const QUESTIONS = [
   {id:"q15",label:"How urgent is this situation?",options:["Planning ahead","Moderate urgency","High urgency","Critical - ATO threatening action"]},
 ]
 
-const FN = "https://australia-southeast1-ascend-membership-app.cloudfunctions.net/runGuardrail"
 const CHARCOAL = "#101213"
 const CHARCOAL2 = "#2A2D2E"
 const GOLD = "#B8973A"
@@ -136,13 +136,12 @@ export default function Page009() {
     stepIndex: current,
   })
 
-  const submit = async (fa: Record<string,string>) => {
+  const submit = (fa: Record<string,string>) => {
     setLoading(true); setError(null)
-    try {
-      const res = await fetch(FN, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({answers:fa})})
-      const data = await res.json()
-      setResult(data); window.scrollTo({top:0,behavior:"smooth"})
-    } catch(e:any) { setError(e.message) } finally { setLoading(false) }
+    const data = calculateScoreLocal(fa)
+    if (data.success) { setResult(data); window.scrollTo({top:0,behavior:"smooth"}) }
+    else { setError(data.error || "Scoring failed") }
+    setLoading(false)
   }
 
   const micLabel = () => {
