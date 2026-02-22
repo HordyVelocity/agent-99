@@ -137,6 +137,7 @@ export default function Page009() {
   })
 
   const submit = (fa: Record<string,string>) => {
+    if (micState !== "idle") toggle()
     setLoading(true); setError(null)
     const data = calculateScoreLocal(fa)
     if (data.success) { setResult(data); window.scrollTo({top:0,behavior:"smooth"}) }
@@ -210,6 +211,19 @@ export default function Page009() {
                 <div key={i} style={{display:"flex",alignItems:"flex-start",gap:"8px"}}>
                   <span style={{color:GOLD,fontSize:"0.65rem",marginTop:"4px",flexShrink:0}}>&#8226;</span>
                   <span style={{fontSize:"0.8rem",color:"#4A4845",lineHeight:1.6}}>{s}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {result.actions?.length>0&&(
+          <div style={{marginBottom:"36px"}}>
+            <h3 style={{fontSize:"0.72rem",fontWeight:700,color:"#8B2020",marginBottom:"14px",textTransform:"uppercase",letterSpacing:"0.06em"}}>Immediate Actions</h3>
+            <div style={{display:"flex",flexDirection:"column",gap:"10px"}}>
+              {result.actions.map((a:string,i:number)=>(
+                <div key={i} style={{display:"flex",alignItems:"flex-start",gap:"10px",padding:"10px 14px",borderRadius:"8px",background:"#FDF5F5",border:"1px solid #E8D5D5"}}>
+                  <span style={{color:"#8B2020",fontSize:"0.7rem",marginTop:"2px",flexShrink:0}}>&#9888;</span>
+                  <span style={{fontSize:"0.8rem",color:"#4A4845",lineHeight:1.6}}>{a}</span>
                 </div>
               ))}
             </div>
