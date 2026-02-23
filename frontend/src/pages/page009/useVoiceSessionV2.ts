@@ -14,7 +14,7 @@
  *   4. Semantic match via Claude Haiku (fallback)
  * 
  * Confidence routing:
- *   ≥ 0.70 → CONFIRMED → green flash → auto-advance (1.8s)
+ *   ≥ 0.45 → CONFIRMED → green flash → auto-advance (1.8s)
  *   0.40–0.69 → UNSURE → amber "Did you mean?" → wait for confirmation
  *   < 0.40 → ERROR → "Didn't catch that" → keep listening
  * 
@@ -29,13 +29,13 @@ import type { MicState, VoiceTiming } from "./voiceTypes"
 // ── TIMING CONFIG ──
 // Centralised — tune here, applies everywhere
 const TIMING: VoiceTiming = {
-  autoAdvanceMs:       1800,   // Confirmed → auto-next delay
+  autoAdvanceMs:       1200,   // Confirmed → auto-next delay
   silenceMs:           6000,   // Silence before pause state
   resumeDelayMs:       2000,   // Pause → auto-resume delay
-  restartAfterMatchMs:  250,   // Restart listening after confirmed match
-  restartAfterFailMs:   400,   // Restart listening after no-match
+  restartAfterMatchMs:  150,   // Restart listening after confirmed match
+  restartAfterFailMs:   250,   // Restart listening after no-match
   restartAfterErrorMs:  500,   // Restart listening after error
-  stepTransitionMs:     350,   // Delay when question changes
+  stepTransitionMs:     200,   // Delay when question changes
   confidenceConfirmed:  0.45,  // Auto-advance threshold
   confidenceUnsure:     0.40,  // "Did you mean?" threshold
 }
