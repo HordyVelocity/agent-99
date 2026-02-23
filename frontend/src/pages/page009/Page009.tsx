@@ -12,7 +12,7 @@ const QUESTIONS = [
   {id:"q7",label:"Have you attempted a payment plan before?",options:["No","Successful","Defaulted","Attempted - rejected"]},
   {id:"q8",label:"Are you currently a director of the company?",options:["Yes","No","Recently resigned"]},
   {id:"q9",label:"Has the ATO issued a Director Penalty Notice (DPN)?",options:["No","Lockdown DPN","Non-lockdown DPN","Unsure"]},
-  {id:"q10",label:"Are there other personal liabilities or guarantees?",options:["No","Small amount","Significant","Overwhelming"]},
+  {id:"q10",label:"Are there other personal liabilities or guarantees?",options:["No","Small amount","Significant","Major liabilities"]},
   {id:"q11",label:"How much can you contribute monthly to a payment plan?",options:["Under $500","$500 to $1,500","$1,500 to $3,000","Over $3,000"]},
   {id:"q12",label:"What timeframe are you seeking for a payment plan?",options:["Less than a year","1 to 2 years","2 to 3 years","Over 3 years"]},
   {id:"q13",label:"How stable is your business income?",options:["Growing","Stable","Declining","No income"]},

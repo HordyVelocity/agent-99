@@ -110,7 +110,7 @@ const ALIASES: Record<string, string[]> = {
   // Q10: Personal liabilities
   "Small amount": ["small amount","small","minor","small","not much","minimal","little bit","not a lot","minor amount","a little","just a bit"],
   "Significant": ["significant","substantial","major","considerable","quite a lot","a lot","significant amount","heaps","plenty"],
-  "Overwhelming": ["overwhelming","too much","can't cope","massive","enormous","crushing","overwhelmed","it's overwhelming","drowning","buried"],
+  "Major liabilities": ["overwhelming","too much","can't cope","massive","enormous","crushing","overwhelmed","it's overwhelming","drowning","buried"],
   // Q11: Monthly contribution (renamed: hyphen → "to")
   "Under $500": ["under 500","less than 500","under five hundred","not much","small amount","minimal","under 500 dollars","a few hundred","couple hundred"],
   "$500 to $1,500": ["500 to 1500","five hundred to fifteen hundred","around a thousand","about 1000","thousand","about a thousand","a grand","about a grand"],
