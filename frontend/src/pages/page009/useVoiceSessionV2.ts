@@ -133,6 +133,12 @@ function matchCommand(spoken: string): { type: "next"|"back"|"yes"|"no"|"change"
   return null
 }
 
+function hasPhrase(s: string, phrase: string) {
+  const hay = ` ${s.toLowerCase().trim()} `
+  const needle = ` ${phrase.toLowerCase().trim()} `
+  return hay.includes(needle)
+}
+
 function matchOption(spoken: string, options: string[]): string | null {
   const s = spoken.toLowerCase().trim()
   // 1. Exact match
@@ -141,7 +147,7 @@ function matchOption(spoken: string, options: string[]): string | null {
   // 2. Alias match
   for (const opt of options) {
     const aliases = ALIASES[opt] || []
-    if (aliases.some(a => s === a || s.includes(a) || a.includes(s))) return opt
+    if (aliases.some(a => s === a || hasPhrase(s, a))) return opt
   }
   // 3. Keyword match (words > 3 chars)
   for (const opt of options) {
