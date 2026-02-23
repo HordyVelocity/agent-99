@@ -98,7 +98,7 @@ const ALIASES: Record<string, string[]> = {
   // Q7: Payment plan history (renamed: removed "Yes - " prefix)
   "No": ["no","nope","negative","no i haven't","have not","no i have not","haven't","i don't","i do not","no i don't","nah","nope never"],
   "Successful": ["successful","yes successful","worked","yes it worked","previous plan worked","was successful","it worked","they accepted it","had a successful one"],
-  "Defaulted": ["defaulted","yes defaulted","broke the plan","failed plan","yes failed","did default","couldn't keep up","fell behind on it","defaulted on it"],
+  "Defaulted": ["defaulted","fulton","faulted","default","yes defaulted","broke the plan","failed plan","yes failed","did default","couldn't keep up","fell behind on it","defaulted on it"],
   "Attempted - rejected": ["rejected","was rejected","they said no","rejected attempt","denied","turned down","they wouldn't accept","they refused"],
   // Q8: Director
   "Yes": ["yes","yep","correct","that's right","affirmative","i am","yes i am","i do","yeah","yep that's right","yeah i am","that's me"],
@@ -449,12 +449,21 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
       start()
     }
   }, [micState, stop, start])
-
-  // ── ACTIVATE (initial session start) ──
+  // ── ACTIVATE (initial session start with Safari warmup) ──
   const activate = useCallback(() => {
-    console.log("🎤 ACTIVATE called", { active: active.current })
-    active.current = true
-    start()
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (!SR) { active.current = true; start(); return }
+    const dummy = new SR()
+    dummy.lang = "en-AU"
+    dummy.continuous = false
+    dummy.interimResults = false
+    try { dummy.start() } catch {}
+    setTimeout(() => {
+      try { dummy.abort() } catch {}
+      active.current = true
+      start()
+    }, 150)
+  }, [start])
   }, [start])
 
   // ── CONFIRM SUGGESTION (tap-to-confirm for unsure state) ──
