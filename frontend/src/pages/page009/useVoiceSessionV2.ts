@@ -61,7 +61,7 @@ const NO_WORDS = [
 // ── ALIAS MAP ──
 // ~240 Australian tax/colloquial phrases mapped to exact option text
 const ALIASES: Record<string, string[]> = {
-  "Sole Trader": ["sole trader","sole","soul trader","sole business","sole trade","im a sole trader","i am a sole trader","sole proprietor","self employed","self-employed"],
+  "Sole Trader": ["sole trader","sole","soul trader","salt trader","so trader","so ill trader","sole business","sole trade","im a sole trader","i am a sole trader","sole proprietor","self employed","self-employed"],
   "Company": ["company","pty ltd","pty","proprietary","corporation","corp","companies","i have a company","my company","limited company"],
   "Trust": ["trust","family trust","unit trust","discretionary trust","trust structure"],
   "Partnership": ["partnership","partner","partners","business partner","business partners"],
@@ -75,7 +75,7 @@ const ALIASES: Record<string, string[]> = {
   "Over 2 years": ["over 2","more than 2","over two","long time","several years","long standing","many years","over 2 years","more than two years","a few years","3 years","4 years","5 years","ages","been a while"],
   "None": ["none","nothing","no notices","haven't received","no letters","no notice","haven't had any","i haven't received any","not yet","nothing yet","no not yet"],
   "Overdue notice": ["overdue","overdue notice","payment overdue","late notice","late payment"],
-  "Garnishee notice": ["garnishee","garnish","bank garnishee","they garnished","garnished my account","frozen account","account frozen"],
+  "Garnishee notice": ["garnishee","garnish","garnishing","garnishing notice","garnish she","gana she","bank garnishee","they garnished","garnished my account","frozen account","account frozen"],
   "Statutory demand": ["statutory","statutory demand","formal demand","section 459"],
   "Wind-up notice": ["wind up","winding up","wind-up","closure notice","windup","winding up notice"],
   "Bankruptcy notice": ["bankruptcy","bankrupt","bankruptcy notice","insolvency notice","insolvency"],
@@ -117,7 +117,7 @@ const ALIASES: Record<string, string[]> = {
   "Avoid bankruptcy": ["avoid bankruptcy","not go bankrupt","stay out of bankruptcy","prevent bankruptcy","no bankruptcy","avoid going bankrupt","don't want bankruptcy","scared of bankruptcy"],
   "Planning ahead": ["planning ahead","early stages","just planning","proactive","not urgent","being prepared","just planning ahead","thinking ahead","getting prepared","preparation"],
   "Moderate urgency": ["moderate","somewhat urgent","fairly urgent","moderate urgency","getting urgent","reasonably urgent","kind of urgent","becoming urgent"],
-  "High urgency": ["high urgency","urgent","very urgent","need help soon","pressing","quite urgent","high","really urgent","need help now"],
+  "High urgency": ["high urgency","urgent","hi agency","hi hennessey","hi hennessy","hi urgency","very urgent","need help soon","pressing","quite urgent","high","really urgent","need help now"],
   "Critical - ATO threatening action": ["critical","threatening","ato threatening","legal action","very urgent","emergency","crisis","imminent","ato is threatening","they are threatening","they're going to","court","tribunal","enforcement"],
 }
 
