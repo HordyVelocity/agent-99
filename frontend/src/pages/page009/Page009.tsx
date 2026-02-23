@@ -88,6 +88,7 @@ export default function Page009() {
   const [error, setError] = useState<string|null>(null)
   const [sessionStarted, setSessionStarted] = useState(false)
 
+  useEffect(() => { if (sessionStarted) activate() }, [sessionStarted])
   useEffect(() => { selectedRef.current = selected }, [selected])
 
   const q = QUESTIONS[current]
@@ -250,7 +251,7 @@ export default function Page009() {
         <h2 style={{fontSize:"1.6rem",fontWeight:600,color:CHARCOAL,marginBottom:"12px",lineHeight:1.3}}>Negotiation Readiness Session</h2>
         <p style={{fontSize:"0.875rem",color:MUTED,lineHeight:1.7,marginBottom:"36px"}}>15 guided questions. Speak your answers or tap the cards. Your microphone will stay active throughout the session.</p>
         <button
-          onClick={()=>{ setSessionStarted(true); activate() }}
+          onClick={()=>{ setSessionStarted(true) }}
           style={{display:"inline-flex",alignItems:"center",gap:"12px",background:CHARCOAL,color:WHITE,border:"none",borderRadius:"12px",padding:"16px 32px",fontSize:"0.9rem",fontWeight:600,cursor:"pointer",boxShadow:"0 4px 16px rgba(16,18,19,0.25)",fontFamily:FONT}}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={WHITE} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
