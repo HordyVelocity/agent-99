@@ -7,13 +7,13 @@ const QUESTIONS = [
   {id:"q2",label:"Approximate total ATO debt?",options:["$15,000 to $250,000","$250,000 to $500,000","$500,000 to $1,000,000","$1,000,000+"]},
   {id:"q3",label:"How long has this debt been outstanding?",options:["Less than 6 months","6 to 12 months","1 to 2 years","More than 2 years"]},
   {id:"q4",label:"Which notices has the ATO sent?",options:["None","Overdue notice","ATO Garnishee","Statutory demand","Wind-up notice","Bankruptcy notice"]},
-  {id:"q5",label:"Have BAS returns been lodged and current?",options:["Yes - all current","Mostly current","Partially lodged","Not current"]},
+  {id:"q5",label:"Have BAS returns been lodged and current?",options:["All current","Mostly current","Partially lodged","Not current"]},
   {id:"q6",label:"What is the current status on income tax returns?",options:["All lodged","Small arrears","Large arrears","Never lodged"]},
-  {id:"q7",label:"Have you attempted a payment plan before?",options:["No","Yes - successful","Yes - defaulted","Attempted - rejected"]},
+  {id:"q7",label:"Have you attempted a payment plan before?",options:["No","Successful","Defaulted","Attempted - rejected"]},
   {id:"q8",label:"Are you currently a director of the company?",options:["Yes","No","Recently resigned"]},
-  {id:"q9",label:"Has the ATO issued a Director Penalty Notice (DPN)?",options:["No","Yes - lockdown","Yes - non-lockdown","Unsure"]},
+  {id:"q9",label:"Has the ATO issued a Director Penalty Notice (DPN)?",options:["No","Lockdown DPN","Non-lockdown DPN","Unsure"]},
   {id:"q10",label:"Are there other personal liabilities or guarantees?",options:["No","Small amount","Significant","Overwhelming"]},
-  {id:"q11",label:"How much can you contribute monthly to a payment plan?",options:["Under $500","$500-$1,500","$1,500-$3,000","Over $3,000"]},
+  {id:"q11",label:"How much can you contribute monthly to a payment plan?",options:["Under $500","$500 to $1,500","$1,500 to $3,000","Over $3,000"]},
   {id:"q12",label:"What timeframe are you seeking for a payment plan?",options:["Less than a year","1 to 2 years","2 to 3 years","Over 3 years"]},
   {id:"q13",label:"How stable is your business income?",options:["Growing","Stable","Declining","No income"]},
   {id:"q14",label:"What is your primary goal?",options:["Keep business trading","Negotiate debt reduction","Wind down responsibly","Avoid bankruptcy"]},
@@ -160,7 +160,7 @@ export default function Page009() {
     <div style={{minHeight:"80vh",display:"flex",alignItems:"center",justifyContent:"center",background:OFF_WHITE}}>
       <style>{STYLES}</style>
       <div style={{textAlign:"center"}}>
-        <div style={{width:"68px",height:"68px",borderRadius:"50%",background:confirmed?"linear-gradient(150deg,#2D6B3F,#1A4028)":unsure?"linear-gradient(150deg,#B8860B,#8B6508)":`linear-gradient(150deg,${CHARCOAL2},${CHARCOAL})`,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 18px",boxShadow:"0 4px 18px rgba(16,18,19,0.28)"}}>
+        <div style={{width:"68px",height:"68px",borderRadius:"50%",background:`linear-gradient(150deg,${CHARCOAL2},${CHARCOAL})`,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 18px",boxShadow:"0 4px 18px rgba(16,18,19,0.28)"}}>
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke={WHITE} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/></svg>
         </div>
         <p style={{color:CHARCOAL,fontSize:"0.9rem",fontWeight:500,marginBottom:"4px"}}>Preparing your readiness report...</p>
@@ -250,7 +250,7 @@ export default function Page009() {
         <h2 style={{fontSize:"1.6rem",fontWeight:600,color:CHARCOAL,marginBottom:"12px",lineHeight:1.3}}>Negotiation Readiness Session</h2>
         <p style={{fontSize:"0.875rem",color:MUTED,lineHeight:1.7,marginBottom:"36px"}}>15 guided questions. Speak your answers or tap the cards. Your microphone will stay active throughout the session.</p>
         <button
-          onClick={()=>{ setSessionStarted(true); setTimeout(()=>activate(),300) }}
+          onClick={()=>{ setSessionStarted(true); activate() }}
           style={{display:"inline-flex",alignItems:"center",gap:"12px",background:CHARCOAL,color:WHITE,border:"none",borderRadius:"12px",padding:"16px 32px",fontSize:"0.9rem",fontWeight:600,cursor:"pointer",boxShadow:"0 4px 16px rgba(16,18,19,0.25)",fontFamily:FONT}}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={WHITE} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
