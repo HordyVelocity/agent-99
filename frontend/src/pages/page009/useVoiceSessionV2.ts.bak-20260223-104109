@@ -36,7 +36,7 @@ const TIMING: VoiceTiming = {
   restartAfterFailMs:   400,   // Restart listening after no-match
   restartAfterErrorMs:  500,   // Restart listening after error
   stepTransitionMs:     350,   // Delay when question changes
-  confidenceConfirmed:  0.45,  // Auto-advance threshold
+  confidenceConfirmed:  0.70,  // Auto-advance threshold
   confidenceUnsure:     0.40,  // "Did you mean?" threshold
 }
 
@@ -239,8 +239,7 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
 
     const r = new SR()
     r.lang = "en-AU"
-    r.continuous = true
-    r.interimResults = true
+    r.interimResults = false
     r.maxAlternatives = 3
     rec.current = r
     setMicState("listening")
@@ -258,13 +257,11 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
 
     // ── ON RESULT ──
     r.onresult = async (e: any) => {
-      if (!e.results[0].isFinal) return  // Skip interim results
       clearSil()
       const alternatives = Array.from(e.results[0]).map((alt: any) => alt.transcript.toLowerCase().trim())
       const webConfidence: number = e.results[0][0].confidence
       const spoken = alternatives[0]
       setTranscript(spoken)
-      console.log("🎤 VOICE DEBUG:", { spoken, alternatives, webConfidence, questionIndex: stepIndex })
 
       // Skip very low confidence entirely
       if (webConfidence < 0.25) {
@@ -319,7 +316,6 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
         }
       }
 
-      console.log("🎯 MATCH RESULT:", { matched, spoken, options: optsRef.current })
       // ── ROUTE BY CONFIDENCE ──
       if (matched) {
         cbSel.current(matched)

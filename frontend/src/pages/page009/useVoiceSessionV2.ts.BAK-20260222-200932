@@ -29,20 +29,20 @@ import type { MicState, VoiceTiming } from "./voiceTypes"
 // ── TIMING CONFIG ──
 // Centralised — tune here, applies everywhere
 const TIMING: VoiceTiming = {
-  autoAdvanceMs:       1800,   // Confirmed → auto-next delay
+  autoAdvanceMs:      1200,   // Confirmed → auto-next delay
   silenceMs:           6000,   // Silence before pause state
   resumeDelayMs:       2000,   // Pause → auto-resume delay
   restartAfterMatchMs:  250,   // Restart listening after confirmed match
-  restartAfterFailMs:   400,   // Restart listening after no-match
+  restartAfterFailMs:  150,   // Restart listening after no-match
   restartAfterErrorMs:  500,   // Restart listening after error
   stepTransitionMs:     350,   // Delay when question changes
-  confidenceConfirmed:  0.45,  // Auto-advance threshold
+  confidenceConfirmed: 0.65,  // Auto-advance threshold
   confidenceUnsure:     0.40,  // "Did you mean?" threshold
 }
 
 // ── VOICE COMMAND LISTS ──
 const NEXT_WORDS = [
-  "next","continue","proceed","done","move on","go ahead","next one",
+  "next","continue","generate","generate assessment","submit","finish","generate report","proceed","done","move on","go ahead","next one",
   "move forward","confirm","okay","advance","forward","go next",
   "next question","yep next","yes next"
 ]
@@ -138,15 +138,26 @@ function matchOption(spoken: string, options: string[]): string | null {
   // 1. Exact match
   const exact = options.find(o => o.toLowerCase() === s)
   if (exact) return exact
-  // 2. Alias match
+  // 2. Alias match — sorted longest-first to prevent partial collisions
   for (const opt of options) {
-    const aliases = ALIASES[opt] || []
-    if (aliases.some(a => s === a || s.includes(a) || a.includes(s))) return opt
+    const sorted = (ALIASES[opt] || []).slice().sort((a: string, b: string) => b.length - a.length)
+    for (const a of sorted) {
+      if (s === a) return opt
+      try {
+        const esc = a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+        if (new RegExp("\\b" + esc + "\\b", "i").test(s)) return opt
+      } catch {
+      }
+    }
   }
-  // 3. Keyword match (words > 3 chars)
+  // 3. Keyword match — word-boundary only, min 4 chars
   for (const opt of options) {
-    const words = opt.toLowerCase().split(/[\s\-$,]+/).filter(w => w.length > 3)
-    if (words.some(w => s.includes(w))) return opt
+    const words = opt.toLowerCase().split(/[\s\-$,]+/).filter((w: string) => w.length > 3)
+    if (words.some((w: string) => {
+      try {
+        return new RegExp("\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "i").test(s)
+      } catch { return false }
+    })) return opt
   }
   return null
 }
@@ -175,10 +186,13 @@ async function semanticMatch(spoken: string, options: string[]): Promise<string 
     if (!result || result === "NULL" || result.toUpperCase() === "NULL") return null
     const exact = options.find(o => o.toLowerCase() === result.toLowerCase())
     if (exact) return exact
-    return options.find(o =>
-      o.toLowerCase().includes(result.toLowerCase()) ||
-      result.toLowerCase().includes(o.toLowerCase())
-    ) || null
+    // Tightened: require >60% overlap to prevent loose matches
+    return options.find(o => {
+      const oL = o.toLowerCase(), rL = result.toLowerCase()
+      if (oL.includes(rL) && rL.length >= oL.length * 0.6) return true
+      if (rL.includes(oL) && oL.length >= rL.length * 0.6) return true
+      return false
+    }) || null
   } catch { return null }
 }
 
@@ -239,8 +253,7 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
 
     const r = new SR()
     r.lang = "en-AU"
-    r.continuous = true
-    r.interimResults = true
+    r.interimResults = false
     r.maxAlternatives = 3
     rec.current = r
     setMicState("listening")
@@ -258,13 +271,11 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
 
     // ── ON RESULT ──
     r.onresult = async (e: any) => {
-      if (!e.results[0].isFinal) return  // Skip interim results
       clearSil()
       const alternatives = Array.from(e.results[0]).map((alt: any) => alt.transcript.toLowerCase().trim())
       const webConfidence: number = e.results[0][0].confidence
       const spoken = alternatives[0]
       setTranscript(spoken)
-      console.log("🎤 VOICE DEBUG:", { spoken, alternatives, webConfidence, questionIndex: stepIndex })
 
       // Skip very low confidence entirely
       if (webConfidence < 0.25) {
@@ -319,7 +330,6 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
         }
       }
 
-      console.log("🎯 MATCH RESULT:", { matched, spoken, options: optsRef.current })
       // ── ROUTE BY CONFIDENCE ──
       if (matched) {
         cbSel.current(matched)
