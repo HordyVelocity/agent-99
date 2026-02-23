@@ -68,7 +68,7 @@ const ALIASES: Record<string, string[]> = {
   "Under $10k": ["under 10","less than 10","under ten","below 10","small debt","ten thousand","under 10k","less than 10k","below 10k","about 5","about 8","five thousand","eight thousand"],
   "$10k-$50k": ["10 to 50","ten to fifty","10k to 50k","between 10 and 50","fifty thousand","10 50","10k 50k","about 20","about 30","about 40","twenty thousand","thirty thousand","forty thousand"],
   "$50k-$200k": ["50 to 200","fifty to two hundred","50k to 200k","between 50 and 200","hundred thousand","150","100k","about 100","about 150","one hundred thousand","a hundred thousand","a hundred grand"],
-  "Over $200k": ["over 200","more than 200","above 200","200k plus","two hundred thousand","large debt","massive debt","over 200k","half a million","million","300","400","500"],
+  "Over $200k": ["over 200","more than 200","above 200","200k plus","two hundred thousand","large debt","massive debt","over 200k","half a million","million"],
   "Under 6 months": ["under 6","less than 6","under six","recent","new debt","just started","few months","6 months","under six months","less than six months","only recent","just happened","couple months","couple of months","a month","two months","three months"],
   "6-12 months": ["6 to 12","six to twelve","half a year","about a year","six months","around a year","6 12","half year","9 months","nine months","10 months","eleven months"],
   "1-2 years": ["1 to 2","one to two","one year","two years","a year or two","couple of years","year or two","about a year and a half","year and a half","18 months","eighteen months"],
@@ -99,7 +99,7 @@ const ALIASES: Record<string, string[]> = {
   "Minor": ["minor","small","not much","minimal","little bit","not a lot","minor amount","a little","just a bit"],
   "Significant": ["significant","substantial","major","considerable","quite a lot","a lot","significant amount","heaps","plenty"],
   "Overwhelming": ["overwhelming","too much","can't cope","massive","enormous","crushing","overwhelmed","it's overwhelming","drowning","buried"],
-  "Under $500": ["under 500","less than 500","under five hundred","not much","small amount","minimal","under 500 dollars","a few hundred","couple hundred","200","300","400"],
+  "Under $500": ["under 500","less than 500","under five hundred","not much","small amount","minimal","under 500 dollars","a few hundred","couple hundred"],
   "$500-$1,500": ["500 to 1500","five hundred to fifteen hundred","around a thousand","about 1000","thousand","about a thousand","a grand","about a grand"],
   "$1,500-$3,000": ["1500 to 3000","fifteen hundred to three thousand","couple thousand","about 2000","two thousand","about two grand","couple grand","2000","2500"],
   "Over $3,000": ["over 3000","more than 3000","over three thousand","three thousand plus","more than three","5000","4000","five thousand","ten thousand","over three grand"],
@@ -129,7 +129,7 @@ function matchCommand(spoken: string): { type: "next"|"back"|"yes"|"no"|"change"
   if (NEXT_WORDS.some(w => s === w)) return { type: "next" }
   if (BACK_WORDS.some(w => s === w)) return { type: "back" }
   if (YES_WORDS.some(w => s === w)) return { type: "yes" }
-  if (NO_WORDS.some(w => s === w || s.includes(w))) return { type: "no" }
+  if (NO_WORDS.some(w => s === w)) return { type: "no" }
   return null
 }
 
