@@ -36,7 +36,7 @@ const STYLES = `
   @keyframes pulseslow { 0%{transform:scale(1);opacity:0.45} 70%{transform:scale(1.55);opacity:0} 100%{transform:scale(1.55);opacity:0} }
   @keyframes pulsefast { 0%{transform:scale(1);opacity:0.55} 65%{transform:scale(1.6);opacity:0} 100%{transform:scale(1.6);opacity:0} }
   @keyframes pulseouter { 0%{transform:scale(1);opacity:0.2} 70%{transform:scale(1.9);opacity:0} 100%{transform:scale(1.9);opacity:0} }
-  @keyframes glideup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes pulseGlow { 0%,100%{box-shadow:0 2px 10px rgba(16,18,19,0.2)} 50%{box-shadow:0 4px 24px rgba(191,155,48,0.5)} } @keyframes glideup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 `
 
 function getLabel(s: number) { return s>=66?"High Readiness":s>=31?"Moderate Readiness":"Low Readiness" }
@@ -299,7 +299,7 @@ export default function Page009() {
           )}
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <button onClick={goBack} disabled={current===0} style={{padding:"10px 18px",borderRadius:"8px",border:`1.5px solid ${BORDER}`,background:"transparent",color:current===0?BORDER:CHARCOAL,fontSize:"0.78rem",cursor:current===0?"default":"pointer",fontFamily:FONT,fontWeight:500}}>&#8592; Back</button>
-            <button onClick={goNext} disabled={!selected} style={{padding:"11px 26px",background:selected?"#4A4D50":BORDER,color:selected?WHITE:MUTED,border:"none",borderRadius:"9px",fontSize:"0.83rem",fontWeight:600,cursor:selected?"pointer":"not-allowed",fontFamily:FONT,transition:"all 0.2s",boxShadow:selected?"0 2px 10px rgba(16,18,19,0.2)":"none"}}>
+            <button onClick={goNext} disabled={!selected} style={{padding:"11px 26px",background:selected?"#4A4D50":BORDER,color:selected?WHITE:MUTED,border:"none",borderRadius:"9px",fontSize:"0.83rem",fontWeight:600,cursor:selected?"pointer":"not-allowed",fontFamily:FONT,transition:"all 0.2s",boxShadow:selected?"0 2px 10px rgba(16,18,19,0.2)":"none",animation:selected&&current===QUESTIONS.length-1?"pulseGlow 2s ease-in-out infinite":"none"}}>
               {current===QUESTIONS.length-1?"Generate Assessment":"Next"} &#8594;
             </button>
           </div>
