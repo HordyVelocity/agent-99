@@ -88,7 +88,6 @@ export default function Page009() {
   const [error, setError] = useState<string|null>(null)
   const [sessionStarted, setSessionStarted] = useState(false)
 
-  useEffect(() => { if (sessionStarted) activate() }, [sessionStarted])
   useEffect(() => { selectedRef.current = selected }, [selected])
 
   const q = QUESTIONS[current]
@@ -276,7 +275,7 @@ export default function Page009() {
         </p>
         <h2 style={{fontSize:"1.45rem",fontWeight:600,color:CHARCOAL,marginBottom:"8px",textAlign:"center",maxWidth:"460px",lineHeight:1.35}}>{q.label}</h2>
         <div style={{width:"36px",height:"2px",background:GOLD,borderRadius:"1px",marginBottom:"28px",opacity:0.5}}></div>
-        <p style={{fontSize:"0.75rem",color:MUTED,marginBottom:"14px",textAlign:"center"}}>Tap and speak your answer...</p>
+        <p style={{fontSize:"0.75rem",color:MUTED,marginBottom:"14px",textAlign:"center"}}>{current===0 && micState==="idle" ? "Ready when you are — tap to begin" : "Tap and speak your answer..."}</p>
         <div style={{background:WHITE,borderRadius:"16px",padding:"28px 24px",width:"100%",maxWidth:"540px",boxShadow:"0 2px 18px rgba(0,0,0,0.05)",border:`1px solid ${BORDER}`}}>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginBottom:"22px"}}>
             <MicButton micState={micState} onToggle={toggle}/>
