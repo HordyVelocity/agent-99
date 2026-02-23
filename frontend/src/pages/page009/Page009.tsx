@@ -131,7 +131,7 @@ export default function Page009() {
   const { micState, transcript, suggestion, toggle, activate, confirmSuggestion, dismissSuggestion } = useVoiceSessionV2({
     options: q.options,
     onSelect: handleSelect,
-    onNext: goNext,
+    onNext: current < QUESTIONS.length-1 ? goNext : () => {},
     onBack: goBack,
     stepIndex: current,
   })

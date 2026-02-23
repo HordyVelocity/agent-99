@@ -273,7 +273,7 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
       console.log("🎤 VOICE DEBUG:", { spoken, alternatives, webConfidence, questionIndex: stepIndex })
 
       // Skip very low confidence entirely
-      if (webConfidence < 0.25) {
+      if (webConfidence < 0.15) {
         setMicState("error")
         if (active.current) setTimeout(() => { if (active.current) start() }, TIMING.restartAfterFailMs)
         return
