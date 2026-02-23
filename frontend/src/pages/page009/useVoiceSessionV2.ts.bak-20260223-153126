@@ -65,13 +65,14 @@ const ALIASES: Record<string, string[]> = {
   "Company": ["company","pty ltd","pty","proprietary","corporation","corp","companies","i have a company","my company","limited company"],
   "Trust": ["trust","family trust","unit trust","discretionary trust","trust structure"],
   "Partnership": ["partnership","partner","partners","business partner","business partners"],
-  "$15,000 to $250,000": ["fifteen thousand","under 250","less than 250","small debt","manageable","15 to 250","under 250 thousand","under two fifty","hundred thousand","about 100","about 50","fifty thousand"],
-  "$250,000 to $500,000": ["250 to 500","two fifty to five hundred","quarter million","half a million","250 thousand","between 250 and 500","about 300","about 400","three hundred thousand","four hundred thousand"],
-  "$500,000 to $1,000,000": ["500 to a million","five hundred thousand","half a million to a million","large debt","significant debt","500 thousand","over 500","about 700","about 800","seven hundred thousand","eight hundred thousand"],
-  "$1,000,000+": ["over a million","over one million","above one million","more than one million","million plus","millions","huge debt","massive debt","very large","major debt","multi million","several million","two million","three million"],
-  "Less than 6 months": ["less than 6 months","under 6 months","under six months","less than six","recent","new debt","just started","few months","couple months","couple of months","a month","two months","three months"],
-  "6 to 12 months": ["6 to 12 months","six to twelve months","half a year","about a year","six months to a year","around a year","half year","9 months","nine months","10 months","eleven months"],
-  "More than 2 years": ["more than 2 years","over two years","over 2 years","more than two years","several years","long standing","many years","3 years","4 years","5 years","ages"],
+  "Under $10k": ["under 10","less than 10","under ten","below 10","small debt","ten thousand","under 10k","less than 10k","below 10k","about 5","about 8","five thousand","eight thousand"],
+  "$10k-$50k": ["10 to 50","ten to fifty","10k to 50k","between 10 and 50","fifty thousand","10 50","10k 50k","about 20","about 30","about 40","twenty thousand","thirty thousand","forty thousand"],
+  "$50k-$200k": ["50 to 200","fifty to two hundred","50k to 200k","between 50 and 200","hundred thousand","150","100k","about 100","about 150","one hundred thousand","a hundred thousand","a hundred grand"],
+  "Over $200k": ["over 200","more than 200","above 200","200k plus","two hundred thousand","large debt","massive debt","over 200k","half a million","million"],
+  "Less than 6 months": ["under 6","less than 6","under six","recent","new debt","just started","few months","6 months","under six months","less than six months","only recent","just happened","couple months","couple of months","a month","two months","three months"],
+  "6 months to 1 year": ["6 to 12","six to twelve","half a year","about a year","six months","around a year","6 12","half year","9 months","nine months","10 months","eleven months"],
+  "1-2 years": ["1 to 2 years","1 to 2","one to two","one year","one or two years","two years","a year or two","couple of years","year or two","about a year and a half","year and a half","18 months","eighteen months"],
+  "Over 2 years": ["over 2","more than 2","over two","long time","several years","long standing","many years","over 2 years","more than two years","a few years","3 years","4 years","5 years","ages","been a while"],
   "None": ["none","nothing","no notices","haven't received","no letters","no notice","haven't had any","i haven't received any","not yet","nothing yet","no not yet"],
   "Overdue notice": ["overdue","overdue notice","payment overdue","late notice","late payment"],
   "ATO Garnishee": ["garnishee","garnish","garnishing","garnishing notice","garnish she","gana she","bank garnishee","they garnished","garnished my account","frozen account","account frozen"],
@@ -103,7 +104,7 @@ const ALIASES: Record<string, string[]> = {
   "$1,500-$3,000": ["1500 to 3000","fifteen hundred to three thousand","couple thousand","about 2000","two thousand","about two grand","couple grand","2000","2500"],
   "Over $3,000": ["over 3000","more than 3000","over three thousand","three thousand plus","more than three","5000","4000","five thousand","ten thousand","over three grand"],
   "Less than a year": ["less than a year","under a year","under 12","less than 12","under a year","short term","quick","within a year","under twelve months","as fast as possible","quickly"],
-  "1 to 2 years": ["1 to 2 years","one to two years","one or two years","about a year","year and a half","18 months","eighteen months","about two years","12 to 24","year or two","12 24","a couple of years"],
+  "1 to 2 years": ["1 to 2 years","one to two years","12 to 24","one to two years","about two years","year or two","eighteen months","12 24","a couple of years"],
   "2 to 3 years": ["2 to 3 years","two to three years","24 to 36","two to three years","couple of years","two three years","thirty months","24 36","about three years"],
   "Over 3 years": ["over 3 years","over three years","over 36","more than 3 years","long term","three years plus","long plan","extended","over 3 years","as long as possible","maximum time"],
   "Growing": ["growing","growth","increasing","going up","expanding","good","improving","business is growing","getting better","on the up"],
@@ -132,7 +133,13 @@ function matchCommand(spoken: string): { type: "next"|"back"|"yes"|"no"|"change"
   return null
 }
 
-
+function parseCommandSafe(spoken: string, options: string[], hasSuggestion: boolean): { type: string } | null {
+  const cmd = parseCommand(spoken)
+  if (!cmd) return null
+  if (cmd.type === "no" && options.some(o => o.toLowerCase() === "no")) return null
+  if (cmd.type === "yes" && !hasSuggestion && options.some(o => o.toLowerCase().startsWith("yes"))) return null
+  return cmd
+}
 
 function hasPhrase(s: string, phrase: string) {
   const hay = ` ${s.toLowerCase().trim()} `
@@ -157,14 +164,10 @@ function matchOption(spoken: string, options: string[]): string | null {
     }
   }
   if (bestMatch) return bestMatch.opt
-  // 3. Keyword match (unique words > 4 chars only)
+  // 3. Keyword match (words > 3 chars)
   for (const opt of options) {
-    const words = opt.toLowerCase().split(/[\s\-$,]+/).filter(w => w.length > 4)
-    const uniqueWords = words.filter(w => {
-      const otherOpts = options.filter(o => o !== opt)
-      return !otherOpts.some(o => o.toLowerCase().includes(w))
-    })
-    if (uniqueWords.some(w => s.includes(w))) return opt
+    const words = opt.toLowerCase().split(/[\s\-$,]+/).filter(w => w.length > 3)
+    if (words.some(w => s.includes(w))) return opt
   }
   return null
 }
@@ -291,10 +294,7 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
 
       // ── LAYER 1: COMMANDS ──
       const cmd = matchCommand(spoken)
-      // If "no"/"yes" is a valid answer option, try option match FIRST
-      const noIsOption = optsRef.current.some(o => o.toLowerCase() === "no")
-      const yesIsOption = optsRef.current.some(o => o.toLowerCase().startsWith("yes"))
-      if (cmd && !((cmd.type === "no" && noIsOption) || (cmd.type === "yes" && yesIsOption && !suggestion))) {
+      if (cmd) {
         clearAdv()
         if (cmd.type === "next") { cbNext.current(); autoRestart(); return }
         if (cmd.type === "back") { cbBack.current(); autoRestart(); return }
