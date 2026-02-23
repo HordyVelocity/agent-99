@@ -16,7 +16,7 @@ export const MIN_ANSWERS = 10;
 export const SCORING_MAP: Record<string, Record<string, number>> = {
   q1: { "Individual / Sole Trader": 3, "Company": 2, "Partnership": 1, "Trust": 0 },
   q2: { "Under $10k": 5, "$10k-$50k": 2, "$50k-$200k": -2, "Over $200k": -4 },
-  q3: { "Under 6 months": 4, "6-12 months": 1, "1-2 years": -2, "Over 2 years": -4 },
+  q3: { "Less than 6 months": 4, "6 months to 1 year": 1, "1 to 2 years": -2, "Over 2 years": -4 },
   q4: { "None": 5, "Overdue notice": 2, "ATO Garnishee": -2, "Statutory demand": -4, "Wind-up notice": -5, "Bankruptcy notice": -6 },
   q5: { "Yes - all current": 6, "Mostly current": 2, "Partially lodged": -2, "Not current": -5 },
   q6: { "All lodged": 4, "Small arrears": 1, "Large arrears": -2, "Never lodged": -4 },
@@ -34,7 +34,7 @@ export const SCORING_MAP: Record<string, Record<string, number>> = {
 export const STRENGTH_MAP: Record<string, { answers: string[]; message: string }> = {
   q1: { answers: ["Individual / Sole Trader"], message: "Simpler structure reduces compliance complexity" },
   q2: { answers: ["Under $10k"], message: "Debt amount is within manageable negotiation range" },
-  q3: { answers: ["Under 6 months"], message: "Early intervention significantly improves outcomes" },
+  q3: { answers: ["Less than 6 months"], message: "Early intervention significantly improves outcomes" },
   q5: { answers: ["Yes - all current", "Mostly current"], message: "Strong BAS compliance demonstrates good faith to the ATO" },
   q6: { answers: ["All lodged"], message: "Complete tax return history strengthens your position" },
   q7: { answers: ["Yes - successful"], message: "Previous successful payment plan shows track record" },
