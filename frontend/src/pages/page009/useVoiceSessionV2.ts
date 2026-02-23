@@ -91,9 +91,9 @@ const ALIASES: Record<string, string[]> = {
   "Partially lodged": ["partial","partially","some lodged","partially lodged","some done","mixed","half done","some of them"],
   "Not current": ["not current","behind","not lodged","outstanding","not done","overdue lodgements","way behind","haven't done them","nah"],
   // Q6: Income tax returns
-  "All lodged": ["all lodged","fully lodged","all done","all up to date","current","all filed","complete","yep all done","yes all lodged"],
-  "Small arrears": ["small arrears","small","minor","minor arrears","small arrears","slightly behind","one or two years","a little behind","minor behind","just a bit"],
-  "Large arrears": ["large arrears","large","significant","significant arrears","multiple years","several behind","quite behind","really behind","very behind"],
+  "Lodgements up to date": ["lodgements up to date","up to date","all lodged","fully lodged","all done","all up to date","current","all filed","complete","yep all done","yes all lodged","fully lodged","all done","all up to date","current","all filed","complete","yep all done","yes all lodged"],
+  "Minor arrears": ["minor arrears","minor","small arrears","small","slightly behind","one or two years","a little behind","minor behind","just a bit","small","minor","minor arrears","small arrears","slightly behind","one or two years","a little behind","minor behind","just a bit"],
+  "Significant arrears": ["significant arrears","significant","large arrears","large","multiple years","several behind","quite behind","really behind","very behind","large","significant","significant arrears","multiple years","several behind","quite behind","really behind","very behind"],
   "Never lodged": ["never","never lodged","not filed","none lodged","never done","haven't ever","never have"],
   // Q7: Payment plan history (renamed: removed "Yes - " prefix)
   "No": ["no","nope","negative","no i haven't","have not","no i have not","haven't","i don't","i do not","no i don't","nah","nope never"],
@@ -110,7 +110,7 @@ const ALIASES: Record<string, string[]> = {
   // Q10: Personal liabilities
   "Small amount": ["small amount","small","minor","small","not much","minimal","little bit","not a lot","minor amount","a little","just a bit"],
   "Significant": ["significant","substantial","major","considerable","quite a lot","a lot","significant amount","heaps","plenty"],
-  "Major liabilities": ["overwhelming","too much","can't cope","massive","enormous","crushing","overwhelmed","it's overwhelming","drowning","buried"],
+  "Major liabilities": ["major liabilities","major","liabilities","major liability","overwhelming","too much","can't cope","massive","enormous","crushing","overwhelmed","it's overwhelming","drowning","buried"],
   // Q11: Monthly contribution (renamed: hyphen → "to")
   "Under $500": ["under 500","less than 500","under five hundred","not much","small amount","minimal","under 500 dollars","a few hundred","couple hundred"],
   "$500 to $1,500": ["500 to 1500","five hundred to fifteen hundred","around a thousand","about 1000","thousand","about a thousand","a grand","about a grand"],
@@ -261,6 +261,7 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
   // ── START RECOGNITION ──
   const start = useCallback(() => {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    console.log("🎤 START called", { active: active.current, options: optsRef.current })
     if (!SR) {
       setMicState("error")
       setTranscript("Voice not supported in this browser")
@@ -419,7 +420,7 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
       }
     }
 
-    try { r.start() } catch {
+    try { r.start(); console.log("🎤 r.start() SUCCESS") } catch (err) { console.warn("🎤 r.start() FAILED", err);
       if (active.current) setTimeout(() => start(), TIMING.restartAfterErrorMs)
     }
   }, [])
@@ -452,6 +453,7 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
 
   // ── ACTIVATE (initial session start) ──
   const activate = useCallback(() => {
+    console.log("🎤 ACTIVATE called", { active: active.current })
     active.current = true
     start()
   }, [start])

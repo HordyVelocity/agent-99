@@ -8,7 +8,7 @@ const QUESTIONS = [
   {id:"q3",label:"How long has this debt been outstanding?",options:["Less than 6 months","6 to 12 months","1 to 2 years","More than 2 years"]},
   {id:"q4",label:"Which notices has the ATO sent?",options:["None","Overdue notice","ATO Garnishee","Statutory demand","Wind-up notice","Bankruptcy notice"]},
   {id:"q5",label:"Have BAS returns been lodged and current?",options:["All current","Mostly current","Partially lodged","Not current"]},
-  {id:"q6",label:"What is the current status on income tax returns?",options:["All lodged","Small arrears","Large arrears","Never lodged"]},
+  {id:"q6",label:"What is the current status on income tax returns?",options:["Lodgements up to date","Minor arrears","Significant arrears","Never lodged"]},
   {id:"q7",label:"Have you attempted a payment plan before?",options:["No","Successful","Defaulted","Attempted - rejected"]},
   {id:"q8",label:"Are you currently a director of the company?",options:["Yes","No","Recently resigned"]},
   {id:"q9",label:"Has the ATO issued a Director Penalty Notice (DPN)?",options:["No","Lockdown DPN","Non-lockdown DPN","Unsure"]},
