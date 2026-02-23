@@ -14,13 +14,15 @@
  *   4. Semantic match via Claude Haiku (fallback)
  * 
  * Confidence routing:
- *   ≥ 0.45 → CONFIRMED → green flash → auto-advance (1.8s)
- *   0.40–0.69 → UNSURE → amber "Did you mean?" → wait for confirmation
- *   < 0.40 → ERROR → "Didn't catch that" → keep listening
+ *   Deterministic match → CONFIRMED → auto-advance (always, regardless of confidence)
+ *   Semantic + ≥ 0.40 → CONFIRMED → auto-advance
+ *   Semantic + 0.35–0.39 → UNSURE → "Did you mean?" → wait for confirmation
+ *   Semantic + < 0.35 → UNSURE → suggestion
+ *   No match → ERROR → keep listening
  * 
- * Date: 22 Feb 2026
+ * Date: 23 Feb 2026
  * Author: Claude (Lead Dev)
- * Architecture: Team proposal (7-state) + Lead Dev (matching layers + auto-restart)
+ * Change: deterministic matches auto-advance (Safari fix), add matchSource logging
  */
 
 import { useState, useRef, useCallback, useEffect } from "react"
@@ -36,8 +38,8 @@ const TIMING: VoiceTiming = {
   restartAfterFailMs:   250,   // Restart listening after no-match
   restartAfterErrorMs:  500,   // Restart listening after error
   stepTransitionMs:     200,   // Delay when question changes
-  confidenceConfirmed:  0.40,  // Auto-advance threshold
-  confidenceUnsure:     0.35,  // "Did you mean?" threshold
+  confidenceConfirmed:  0.40,  // Auto-advance threshold (semantic only)
+  confidenceUnsure:     0.35,  // "Did you mean?" threshold (semantic only)
 }
 
 // ── VOICE COMMAND LISTS ──
@@ -320,29 +322,39 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
 
       // ── LAYER 2: DIRECT + ALIAS MATCH ──
       let matched: string | null = null
-      for (const alt of alternatives) {
-        matched = matchOption(alt, optsRef.current)
-        if (matched) break
+      let matchSource: "deterministic" | "semantic" | null = null
+
+      // 1) Deterministic: spoken first
+      matched = matchOption(spoken, optsRef.current)
+      if (matched) matchSource = "deterministic"
+
+      // 2) Deterministic: alternatives
+      if (!matched) {
+        for (const alt of alternatives) {
+          matched = matchOption(alt, optsRef.current)
+          if (matched) { matchSource = "deterministic"; break }
+        }
       }
 
       // ── LAYER 3: SEMANTIC MATCH (Haiku fallback) ──
       if (!matched) {
         matched = await semanticMatch(spoken, optsRef.current)
+        if (matched) matchSource = "semantic"
       }
       if (!matched) {
         for (const alt of alternatives.slice(1)) {
           matched = await semanticMatch(alt, optsRef.current)
-          if (matched) break
+          if (matched) { matchSource = "semantic"; break }
         }
       }
 
-      console.log("🎯 MATCH RESULT:", { matched, spoken, options: optsRef.current })
+      console.log("🎯 MATCH RESULT:", { matched, matchSource, webConfidence, spoken, options: optsRef.current })
       // ── ROUTE BY CONFIDENCE ──
       if (matched) {
         cbSel.current(matched)
 
-        if (webConfidence >= TIMING.confidenceConfirmed) {
-          // ✅ HIGH CONFIDENCE → confirmed → auto-advance
+        if (matchSource === "deterministic" || webConfidence >= TIMING.confidenceConfirmed) {
+          // ✅ DETERMINISTIC or HIGH CONFIDENCE → confirmed → auto-advance
           setSuggestion(null)
           setMicState("confirmed")
           clearAdv()
@@ -351,13 +363,13 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
           }, TIMING.autoAdvanceMs)
           autoRestart()
         } else if (webConfidence >= TIMING.confidenceUnsure) {
-          // 🟡 MEDIUM CONFIDENCE → unsure → wait for confirmation
+          // 🟡 SEMANTIC + MEDIUM CONFIDENCE → unsure → wait for confirmation
           setSuggestion(matched)
           setMicState("unsure")
           // Do NOT auto-advance — wait for "yes" command or tap
           autoRestart()
         } else {
-          // 🔴 LOW CONFIDENCE but matched — treat as unsure
+          // 🔴 SEMANTIC + LOW CONFIDENCE — treat as unsure
           setSuggestion(matched)
           setMicState("unsure")
           autoRestart()
