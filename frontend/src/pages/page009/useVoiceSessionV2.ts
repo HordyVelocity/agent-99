@@ -261,7 +261,6 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
   // ── START RECOGNITION ──
   const start = useCallback(() => {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    console.log("🎤 START called", { active: active.current, options: optsRef.current })
     if (!SR) {
       setMicState("error")
       setTranscript("Voice not supported in this browser")
@@ -420,7 +419,7 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
       }
     }
 
-    try { r.start(); console.log("🎤 r.start() SUCCESS") } catch (err) { console.warn("🎤 r.start() FAILED", err);
+    try { r.start() } catch {
       if (active.current) setTimeout(() => start(), TIMING.restartAfterErrorMs)
     }
   }, [])
