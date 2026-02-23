@@ -464,7 +464,6 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
       start()
     }, 150)
   }, [start])
-  }, [start])
 
   // ── CONFIRM SUGGESTION (tap-to-confirm for unsure state) ──
   const confirmSuggestion = useCallback(() => {
