@@ -36,8 +36,8 @@ const TIMING: VoiceTiming = {
   restartAfterFailMs:   250,   // Restart listening after no-match
   restartAfterErrorMs:  500,   // Restart listening after error
   stepTransitionMs:     200,   // Delay when question changes
-  confidenceConfirmed:  0.45,  // Auto-advance threshold
-  confidenceUnsure:     0.40,  // "Did you mean?" threshold
+  confidenceConfirmed:  0.40,  // Auto-advance threshold
+  confidenceUnsure:     0.35,  // "Did you mean?" threshold
 }
 
 // ── VOICE COMMAND LISTS ──
@@ -61,7 +61,7 @@ const NO_WORDS = [
 // ── ALIAS MAP ──
 // ~240 Australian tax/colloquial phrases mapped to exact option text
 const ALIASES: Record<string, string[]> = {
-  "Sole Trader": ["sole trader","sole","soul trader","salt trader","so trader","so ill trader","sole business","sole trade","im a sole trader","i am a sole trader","sole proprietor","self employed","self-employed"],
+  "Individual / Sole Trader": ["individual","sole trader","sole","soul trader","salt trader","so trader","so ill trader","sole business","sole trade","im a sole trader","i am a sole trader","sole proprietor","self employed","self-employed"],
   "Company": ["company","pty ltd","pty","proprietary","corporation","corp","companies","i have a company","my company","limited company"],
   "Trust": ["trust","family trust","unit trust","discretionary trust","trust structure"],
   "Partnership": ["partnership","partner","partners","business partner","business partners"],
@@ -75,7 +75,7 @@ const ALIASES: Record<string, string[]> = {
   "Over 2 years": ["over 2","more than 2","over two","long time","several years","long standing","many years","over 2 years","more than two years","a few years","3 years","4 years","5 years","ages","been a while"],
   "None": ["none","nothing","no notices","haven't received","no letters","no notice","haven't had any","i haven't received any","not yet","nothing yet","no not yet"],
   "Overdue notice": ["overdue","overdue notice","payment overdue","late notice","late payment"],
-  "Garnishee notice": ["garnishee","garnish","garnishing","garnishing notice","garnish she","gana she","bank garnishee","they garnished","garnished my account","frozen account","account frozen"],
+  "ATO Garnishee": ["garnishee","garnish","garnishing","garnishing notice","garnish she","gana she","bank garnishee","they garnished","garnished my account","frozen account","account frozen"],
   "Statutory demand": ["statutory","statutory demand","formal demand","section 459"],
   "Wind-up notice": ["wind up","winding up","wind-up","closure notice","windup","winding up notice"],
   "Bankruptcy notice": ["bankruptcy","bankrupt","bankruptcy notice","insolvency notice","insolvency"],
@@ -84,8 +84,8 @@ const ALIASES: Record<string, string[]> = {
   "Partially lodged": ["partial","partially","some lodged","partially lodged","some done","mixed","half done","some of them"],
   "Not current": ["not current","behind","not lodged","outstanding","not done","overdue lodgements","way behind","haven't done them","nah"],
   "All lodged": ["all lodged","fully lodged","all done","all up to date","current","all filed","complete","yep all done","yes all lodged"],
-  "Minor arrears": ["minor","minor arrears","small arrears","slightly behind","one or two years","a little behind","minor behind","just a bit"],
-  "Significant arrears": ["significant","significant arrears","multiple years","several behind","quite behind","really behind","very behind"],
+  "Small arrears": ["small arrears","small","minor","minor arrears","small arrears","slightly behind","one or two years","a little behind","minor behind","just a bit"],
+  "Large arrears": ["large arrears","large","significant","significant arrears","multiple years","several behind","quite behind","really behind","very behind"],
   "Never lodged": ["never","never lodged","not filed","none lodged","never done","haven't ever","never have"],
   "No": ["no","nope","negative","no i haven't","have not","no i have not","haven't","i don't","i do not","no i don't","nah","nope never"],
   "Yes - successful": ["yes successful","successful","worked","yes it worked","previous plan worked","was successful","it worked","they accepted it"],
@@ -96,17 +96,17 @@ const ALIASES: Record<string, string[]> = {
   "Yes - lockdown": ["lockdown","yes lockdown","locked down dpn","lockdown dpn","locked dpn","lockdown one","the lockdown one"],
   "Yes - non-lockdown": ["non lockdown","non-lockdown","not lockdown","non lockdown dpn","unlocked dpn","the other one","non lockdown one"],
   "Unsure": ["unsure","not sure","don't know","uncertain","maybe","possibly","not certain","no idea","i'm not sure","i am not sure","what's that","what is that","don't understand"],
-  "Minor": ["minor","small","not much","minimal","little bit","not a lot","minor amount","a little","just a bit"],
+  "Small amount": ["small amount","small","minor","small","not much","minimal","little bit","not a lot","minor amount","a little","just a bit"],
   "Significant": ["significant","substantial","major","considerable","quite a lot","a lot","significant amount","heaps","plenty"],
   "Overwhelming": ["overwhelming","too much","can't cope","massive","enormous","crushing","overwhelmed","it's overwhelming","drowning","buried"],
   "Under $500": ["under 500","less than 500","under five hundred","not much","small amount","minimal","under 500 dollars","a few hundred","couple hundred"],
   "$500-$1,500": ["500 to 1500","five hundred to fifteen hundred","around a thousand","about 1000","thousand","about a thousand","a grand","about a grand"],
   "$1,500-$3,000": ["1500 to 3000","fifteen hundred to three thousand","couple thousand","about 2000","two thousand","about two grand","couple grand","2000","2500"],
   "Over $3,000": ["over 3000","more than 3000","over three thousand","three thousand plus","more than three","5000","4000","five thousand","ten thousand","over three grand"],
-  "Under 12 months": ["under 12","less than 12","under a year","short term","quick","within a year","under twelve months","as fast as possible","quickly"],
-  "12-24 months": ["12 to 24","one to two years","about two years","year or two","eighteen months","12 24","a couple of years"],
-  "24-36 months": ["24 to 36","two to three years","couple of years","two three years","thirty months","24 36","about three years"],
-  "Over 36 months": ["over 36","more than 3 years","long term","three years plus","long plan","extended","over 3 years","as long as possible","maximum time"],
+  "Less than a year": ["less than a year","under a year","under 12","less than 12","under a year","short term","quick","within a year","under twelve months","as fast as possible","quickly"],
+  "1 to 2 years": ["1 to 2 years","one to two years","12 to 24","one to two years","about two years","year or two","eighteen months","12 24","a couple of years"],
+  "2 to 3 years": ["2 to 3 years","two to three years","24 to 36","two to three years","couple of years","two three years","thirty months","24 36","about three years"],
+  "Over 3 years": ["over 3 years","over three years","over 36","more than 3 years","long term","three years plus","long plan","extended","over 3 years","as long as possible","maximum time"],
   "Growing": ["growing","growth","increasing","going up","expanding","good","improving","business is growing","getting better","on the up"],
   "Stable": ["stable","steady","consistent","same","holding","neutral","flat","staying the same","not changing"],
   "Declining": ["declining","going down","decreasing","less revenue","falling","worse","dropping","it's declining","getting worse","struggling"],
@@ -117,8 +117,8 @@ const ALIASES: Record<string, string[]> = {
   "Avoid bankruptcy": ["avoid bankruptcy","not go bankrupt","stay out of bankruptcy","prevent bankruptcy","no bankruptcy","avoid going bankrupt","don't want bankruptcy","scared of bankruptcy"],
   "Planning ahead": ["planning ahead","early stages","just planning","proactive","not urgent","being prepared","just planning ahead","thinking ahead","getting prepared","preparation"],
   "Moderate urgency": ["moderate","somewhat urgent","fairly urgent","moderate urgency","getting urgent","reasonably urgent","kind of urgent","becoming urgent"],
-  "High urgency": ["high urgency","urgent","hi agency","hi hennessey","hi hennessy","hi urgency","very urgent","need help soon","pressing","quite urgent","high","really urgent","need help now"],
-  "Critical - ATO threatening action": ["critical","threatening","ato threatening","legal action","very urgent","emergency","crisis","imminent","ato is threatening","they are threatening","they're going to","court","tribunal","enforcement"],
+  "Very urgent": ["very urgent","high urgency","urgent","hi agency","hi hennessey","hi hennessy","hi urgency","very urgent","need help soon","pressing","quite urgent","high","really urgent","need help now"],
+  "ATO Action": ["ato action","critical","threatening","ato threatening","legal action","very urgent","emergency","crisis","imminent","ato is threatening","they are threatening","they're going to","court","tribunal","enforcement"],
 }
 
 

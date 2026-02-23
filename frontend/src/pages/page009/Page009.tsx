@@ -3,21 +3,21 @@ import { useVoiceSessionV2 } from "./useVoiceSessionV2"
 import { calculateScoreLocal } from "../../lib/scoring"
 
 const QUESTIONS = [
-  {id:"q1",label:"What type of business structure?",options:["Sole Trader","Company","Trust","Partnership"]},
+  {id:"q1",label:"What type of business structure?",options:["Individual / Sole Trader","Company","Trust","Partnership"]},
   {id:"q2",label:"Approximate total ATO debt?",options:["Under $10k","$10k-$50k","$50k-$200k","Over $200k"]},
   {id:"q3",label:"How long has this debt been outstanding?",options:["Under 6 months","6-12 months","1-2 years","Over 2 years"]},
-  {id:"q4",label:"Which notices has the ATO sent?",options:["None","Overdue notice","Garnishee notice","Statutory demand","Wind-up notice","Bankruptcy notice"]},
+  {id:"q4",label:"Which notices has the ATO sent?",options:["None","Overdue notice","ATO Garnishee","Statutory demand","Wind-up notice","Bankruptcy notice"]},
   {id:"q5",label:"Have BAS returns been lodged and current?",options:["Yes - all current","Mostly current","Partially lodged","Not current"]},
-  {id:"q6",label:"What is the current status on income tax returns?",options:["All lodged","Minor arrears","Significant arrears","Never lodged"]},
+  {id:"q6",label:"What is the current status on income tax returns?",options:["All lodged","Small arrears","Large arrears","Never lodged"]},
   {id:"q7",label:"Have you attempted a payment plan before?",options:["No","Yes - successful","Yes - defaulted","Attempted - rejected"]},
   {id:"q8",label:"Are you currently a director of the company?",options:["Yes","No","Recently resigned"]},
   {id:"q9",label:"Has the ATO issued a Director Penalty Notice (DPN)?",options:["No","Yes - lockdown","Yes - non-lockdown","Unsure"]},
-  {id:"q10",label:"Are there other personal liabilities or guarantees?",options:["No","Minor","Significant","Overwhelming"]},
+  {id:"q10",label:"Are there other personal liabilities or guarantees?",options:["No","Small amount","Significant","Overwhelming"]},
   {id:"q11",label:"How much can you contribute monthly to a payment plan?",options:["Under $500","$500-$1,500","$1,500-$3,000","Over $3,000"]},
-  {id:"q12",label:"What timeframe are you seeking for a payment plan?",options:["Under 12 months","12-24 months","24-36 months","Over 36 months"]},
+  {id:"q12",label:"What timeframe are you seeking for a payment plan?",options:["Less than a year","1 to 2 years","2 to 3 years","Over 3 years"]},
   {id:"q13",label:"How stable is your business income?",options:["Growing","Stable","Declining","No income"]},
   {id:"q14",label:"What is your primary goal?",options:["Keep business trading","Negotiate debt reduction","Wind down responsibly","Avoid bankruptcy"]},
-  {id:"q15",label:"How urgent is this situation?",options:["Planning ahead","Moderate urgency","High urgency","Critical - ATO threatening action"]},
+  {id:"q15",label:"How urgent is this situation?",options:["Planning ahead","Moderate urgency","Very urgent","ATO Action"]},
 ]
 
 const CHARCOAL = "#101213"
