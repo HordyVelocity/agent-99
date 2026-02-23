@@ -71,7 +71,7 @@ const ALIASES: Record<string, string[]> = {
   "Over $200k": ["over 200","more than 200","above 200","200k plus","two hundred thousand","large debt","massive debt","over 200k","half a million","million"],
   "Less than 6 months": ["under 6","less than 6","under six","recent","new debt","just started","few months","6 months","under six months","less than six months","only recent","just happened","couple months","couple of months","a month","two months","three months"],
   "6 months to 1 year": ["6 to 12","six to twelve","half a year","about a year","six months","around a year","6 12","half year","9 months","nine months","10 months","eleven months"],
-  "1 to 2 years": ["1 to 2","one to two","one year","two years","a year or two","couple of years","year or two","about a year and a half","year and a half","18 months","eighteen months"],
+  "1-2 years": ["1 to 2 years","1 to 2","one to two","one year","one or two years","two years","a year or two","couple of years","year or two","about a year and a half","year and a half","18 months","eighteen months"],
   "Over 2 years": ["over 2","more than 2","over two","long time","several years","long standing","many years","over 2 years","more than two years","a few years","3 years","4 years","5 years","ages","been a while"],
   "None": ["none","nothing","no notices","haven't received","no letters","no notice","haven't had any","i haven't received any","not yet","nothing yet","no not yet"],
   "Overdue notice": ["overdue","overdue notice","payment overdue","late notice","late payment"],
@@ -133,6 +133,14 @@ function matchCommand(spoken: string): { type: "next"|"back"|"yes"|"no"|"change"
   return null
 }
 
+function parseCommandSafe(spoken: string, options: string[], hasSuggestion: boolean): { type: string } | null {
+  const cmd = parseCommand(spoken)
+  if (!cmd) return null
+  if (cmd.type === "no" && options.some(o => o.toLowerCase() === "no")) return null
+  if (cmd.type === "yes" && !hasSuggestion && options.some(o => o.toLowerCase().startsWith("yes"))) return null
+  return cmd
+}
+
 function hasPhrase(s: string, phrase: string) {
   const hay = ` ${s.toLowerCase().trim()} `
   const needle = ` ${phrase.toLowerCase().trim()} `
@@ -144,11 +152,18 @@ function matchOption(spoken: string, options: string[]): string | null {
   // 1. Exact match
   const exact = options.find(o => o.toLowerCase() === s)
   if (exact) return exact
-  // 2. Alias match
+  // 2. Alias match (longest phrase wins)
+  let bestMatch: { opt: string; len: number } | null = null
   for (const opt of options) {
     const aliases = ALIASES[opt] || []
-    if (aliases.some(a => s === a || hasPhrase(s, a))) return opt
+    for (const a of aliases) {
+      if (s === a || hasPhrase(s, a)) {
+        const len = a.length
+        if (!bestMatch || len > bestMatch.len) bestMatch = { opt, len }
+      }
+    }
   }
+  if (bestMatch) return bestMatch.opt
   // 3. Keyword match (words > 3 chars)
   for (const opt of options) {
     const words = opt.toLowerCase().split(/[\s\-$,]+/).filter(w => w.length > 3)
@@ -180,11 +195,7 @@ async function semanticMatch(spoken: string, options: string[]): Promise<string 
     const result = data.content?.[0]?.text?.trim().replace(/^["']|["']$/g, "").trim()
     if (!result || result === "NULL" || result.toUpperCase() === "NULL") return null
     const exact = options.find(o => o.toLowerCase() === result.toLowerCase())
-    if (exact) return exact
-    return options.find(o =>
-      o.toLowerCase().includes(result.toLowerCase()) ||
-      result.toLowerCase().includes(o.toLowerCase())
-    ) || null
+    return exact || null
   } catch { return null }
 }
 

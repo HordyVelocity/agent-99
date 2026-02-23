@@ -5,7 +5,7 @@ import { calculateScoreLocal } from "../../lib/scoring"
 const QUESTIONS = [
   {id:"q1",label:"What type of business structure?",options:["Individual / Sole Trader","Company","Trust","Partnership"]},
   {id:"q2",label:"Approximate total ATO debt?",options:["Under $10k","$10k-$50k","$50k-$200k","Over $200k"]},
-  {id:"q3",label:"How long has this debt been outstanding?",options:["Less than 6 months","6 months to 1 year","1 to 2 years","Over 2 years"]},
+  {id:"q3",label:"How long has this debt been outstanding?",options:["Less than 6 months","6-12 months","1-2 years","Over 2 years"]},
   {id:"q4",label:"Which notices has the ATO sent?",options:["None","Overdue notice","ATO Garnishee","Statutory demand","Wind-up notice","Bankruptcy notice"]},
   {id:"q5",label:"Have BAS returns been lodged and current?",options:["Yes - all current","Mostly current","Partially lodged","Not current"]},
   {id:"q6",label:"What is the current status on income tax returns?",options:["All lodged","Small arrears","Large arrears","Never lodged"]},
