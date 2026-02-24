@@ -89,7 +89,7 @@ export default function Page009() {
   const [sessionStarted, setSessionStarted] = useState(false)
   const [readyToSubmit, setReadyToSubmit] = useState(false)
 
-  useEffect(() => { if (sessionStarted && current === 0 && micState === "idle") { setTimeout(() => toggle(), 800) } }, [sessionStarted])
+  useEffect(() => { if (sessionStarted && current === 0 && micState === "idle") { setTimeout(() => toggle(), 1200) } }, [sessionStarted])
   useEffect(() => { selectedRef.current = selected }, [selected])
 
   const q = QUESTIONS[current]
@@ -133,7 +133,7 @@ export default function Page009() {
   const { micState, transcript, suggestion, toggle, confirmSuggestion, dismissSuggestion } = useVoiceSessionV2({
     options: q.options,
     onSelect: handleSelect,
-    onNext: current < QUESTIONS.length-1 ? goNext : () => {},
+    onNext: goNext,
     onBack: goBack,
     stepIndex: current,
   })
