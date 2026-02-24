@@ -133,9 +133,9 @@ const ALIASES: Record<string, string[]> = {
   "Avoid bankruptcy": ["avoid bankruptcy","not go bankrupt","stay out of bankruptcy","prevent bankruptcy","no bankruptcy","avoid going bankrupt","don't want bankruptcy","scared of bankruptcy"],
   // Q15: Urgency
   "Planning ahead": ["planning ahead","early stages","just planning","proactive","not urgent","being prepared","just planning ahead","thinking ahead","getting prepared","preparation"],
-  "Moderate urgency": ["moderate","somewhat urgent","fairly urgent","moderate urgency","getting urgent","reasonably urgent","kind of urgent","becoming urgent"],
-  "Very urgent": ["very urgent","high urgency","urgent","hi agency","hi hennessey","hi hennessy","hi urgency","very urgent","need help soon","pressing","quite urgent","high","really urgent","need help now"],
-  "ATO Action": ["ato action","critical","threatening","ato threatening","legal action","very urgent","emergency","crisis","imminent","ato is threatening","they are threatening","they're going to","court","tribunal","enforcement"],
+  "Moderate urgency": ["moderate","moderate urgency","somewhat urgent","fairly urgent","getting urgent","reasonably urgent","kind of urgent","becoming urgent","moderately urgent","not too urgent","medium","medium urgency","in between"],
+  "Very urgent": ["very urgent","urgent","high urgency","really urgent","quite urgent","super urgent","extremely urgent","need help soon","need help now","pressing","desperate","time sensitive","running out of time","asap"],
+  "ATO Action": ["ato action","critical","threatening","ato threatening","legal action","emergency","crisis","imminent","ato is threatening","they are threatening","they're going to","court","tribunal","enforcement","ato","action"],
 }
 
 
