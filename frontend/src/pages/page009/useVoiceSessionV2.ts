@@ -114,8 +114,8 @@ const ALIASES: Record<string, string[]> = {
   // Q11: Monthly contribution (renamed: hyphen → "to")
   "Under $500": ["under 500","less than 500","under five hundred","not much","small amount","minimal","under 500 dollars","a few hundred","couple hundred"],
   "$500 to $1,500": ["500 to 1500","five hundred to fifteen hundred","around a thousand","about 1000","thousand","about a thousand","a grand","about a grand"],
-  "$1,500 to $3,000": ["1500 to 3000","fifteen hundred to three thousand","couple thousand","about 2000","two thousand","about two grand","couple grand","2000","2500"],
-  "Over $3,000": ["over 3000","more than 3000","over three thousand","three thousand plus","more than three","5000","4000","five thousand","ten thousand","over three grand"],
+  "$1,500 to $3,000": ["1500 to 3000","fifteen hundred to three thousand","couple thousand","about 2000","two thousand","about two grand","couple grand"],
+  "Over $3,000": ["over 3000","more than 3000","over three thousand","three thousand plus","more than three","5000","4000","five thousand","ten thousand","over three grand","above 3000","3000 plus","over 3"],
   // Q12: Payment timeframe
   "Less than a year": ["less than a year","under a year","under 12","less than 12","under a year","short term","quick","within a year","under twelve months","as fast as possible","quickly"],
   "1 to 2 years": ["1 to 2 years","one to two years","one or two years","about a year","year and a half","18 months","eighteen months","about two years","12 to 24","year or two","12 24","a couple of years"],

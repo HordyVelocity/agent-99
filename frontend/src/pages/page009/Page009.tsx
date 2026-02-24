@@ -312,7 +312,7 @@ export default function Page009() {
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <button onClick={goBack} disabled={current===0} style={{padding:"10px 18px",borderRadius:"8px",border:`1.5px solid ${BORDER}`,background:"transparent",color:current===0?BORDER:CHARCOAL,fontSize:"0.78rem",cursor:current===0?"default":"pointer",fontFamily:FONT,fontWeight:500}}>&#8592; Back</button>
             <button onClick={goNext} disabled={!selected} style={{padding:"11px 26px",background:selected?"#4A4D50":BORDER,color:selected?WHITE:MUTED,border:"none",borderRadius:"9px",fontSize:"0.83rem",fontWeight:600,cursor:selected?"pointer":"not-allowed",fontFamily:FONT,transition:"all 0.2s",boxShadow:selected?"0 2px 10px rgba(16,18,19,0.2)":"none",animation:selected&&current===QUESTIONS.length-1?"pulseGlow 2s ease-in-out infinite":"none"}}>
-              {current===QUESTIONS.length-1?"Generate Assessment":"Next"} &#8594;
+              {current===QUESTIONS.length-1?"Submit":"Next"} &#8594;
             </button>
           </div>
         </div>
