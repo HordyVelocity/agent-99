@@ -128,7 +128,7 @@ export default function Page009() {
     setTimeout(() => setFlashed(""), 180)
   }, [])
 
-  const { micState, transcript, suggestion, toggle, activate, confirmSuggestion, dismissSuggestion } = useVoiceSessionV2({
+  const { micState, transcript, suggestion, toggle, confirmSuggestion, dismissSuggestion } = useVoiceSessionV2({
     options: q.options,
     onSelect: handleSelect,
     onNext: current < QUESTIONS.length-1 ? goNext : () => {},
