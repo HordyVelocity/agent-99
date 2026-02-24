@@ -96,28 +96,31 @@ const ALIASES: Record<string, string[]> = {
   "Major arrears": ["major arrears","major","significant arrears","significant","large arrears","large","multiple years","several behind","quite behind","really behind","very behind"],
   "Never lodged": ["never","never lodged","not filed","none lodged","never done","haven't ever","never have"],
   // Q7: Payment plan history (renamed: removed "Yes - " prefix)
-  "No": ["no","nope","negative","no i haven't","have not","no i have not","haven't","i don't","i do not","no i don't","nah","nope never"],
+  "No payment plan": ["no","no payment plan","nope","negative","no i haven't","have not","no i have not","haven't","i don't","i do not","no i don't","nah","nope never","no plan","never had a plan","no payment","not attempted"],
   "Successful": ["successful","yes successful","worked","yes it worked","previous plan worked","was successful","it worked","they accepted it","had a successful one"],
   "Defaulted": ["defaulted","fulton","faulted","default","yes defaulted","broke the plan","failed plan","yes failed","did default","couldn't keep up","fell behind on it","defaulted on it"],
   "Attempted - rejected": ["rejected","was rejected","they said no","rejected attempt","denied","turned down","they wouldn't accept","they refused"],
   // Q8: Director
-  "Yes": ["yes","yep","correct","that's right","affirmative","i am","yes i am","i do","yeah","yep that's right","yeah i am","that's me"],
+  "Yes I am": ["yes","yes i am","yep","correct","that's right","affirmative","i am","i do","yeah","yep that's right","yeah i am","that's me","yes i'm a director","i am a director","yes director"],
   "Recently resigned": ["recently resigned","just resigned","resigned recently","stepped down recently","just stepped down","resigned last month","recently stepped down"],
+  "No I'm not": ["no","no i'm not","nope","not a director","no i am not","nah","negative","i'm not","not me","no not a director"],
   // Q9: DPN (renamed: "Yes - lockdown" → "Lockdown DPN", "Yes - non-lockdown" → "Non-lockdown DPN")
+  "No DPN received": ["no","no dpn","no dpn received","nope","haven't received","not received","no notice","no penalty","no penalty notice","nah","negative","none","no i haven't"],
   "Lockdown DPN": ["lockdown","lockdown dpn","locked down dpn","locked dpn","lockdown one","the lockdown one","yes lockdown"],
   "Non-lockdown DPN": ["non lockdown","non-lockdown","not lockdown","non lockdown dpn","non-lockdown dpn","unlocked dpn","the other one","non lockdown one","yes non lockdown"],
   "Unsure": ["unsure","not sure","don't know","uncertain","maybe","possibly","not certain","no idea","i'm not sure","i am not sure","what's that","what is that","don't understand"],
   // Q10: Personal liabilities
+  "No liabilities": ["no","no liabilities","nope","none","no guarantees","no personal","nothing","nah","negative","no i don't","don't have any"],
   "Small amount": ["small amount","small","minor","small","not much","minimal","little bit","not a lot","minor amount","a little","just a bit"],
   "Significant": ["significant","substantial","considerable","quite a lot","a lot","significant amount","heaps","plenty"],
   "Major liabilities": ["major liabilities","major","liabilities","major liability","overwhelming","too much","can't cope","massive","enormous","crushing","overwhelmed","it's overwhelming","drowning","buried"],
   // Q11: Monthly contribution (renamed: hyphen → "to")
   "Under $500": ["under 500","less than 500","under five hundred","not much","small amount","minimal","under 500 dollars","a few hundred","couple hundred"],
   "$500 to $1,500": ["500 to 1500","five hundred to fifteen hundred","around a thousand","about 1000","thousand","about a thousand","a grand","about a grand"],
-  "$1,500 to $3,000": ["1500 to 3000","fifteen hundred to three thousand","couple thousand","about 2000","two thousand","about two grand","couple grand"],
+  "$1,500 to $3,000": ["1500 to 3000","fifteen hundred to three thousand","couple thousand","about 2000","two thousand","about two grand","couple grand","15000","fifteen hundred","1500","about fifteen hundred"],
   "Over $3,000": ["over 3000","more than 3000","over three thousand","three thousand plus","more than three","5000","4000","five thousand","ten thousand","over three grand","above 3000","3000 plus","over 3"],
   // Q12: Payment timeframe
-  "Less than a year": ["less than a year","under a year","under 12","less than 12","under a year","short term","quick","within a year","under twelve months","as fast as possible","quickly"],
+  "Less than a year": ["less than a year","under a year","under 12","less than 12","under a year","short term","quick","within a year","under twelve months","as fast as possible","quickly","listen to you","listen to","listen"],
   "1 to 2 years": ["1 to 2 years","one to two years","one or two years","about a year","year and a half","18 months","eighteen months","about two years","12 to 24","year or two","12 24","a couple of years"],
   "2 to 3 years": ["2 to 3 years","two to three years","24 to 36","two to three years","couple of years","two three years","thirty months","24 36","about three years"],
   "Over 3 years": ["over 3 years","over three years","over 36","more than 3 years","long term","three years plus","long plan","extended","over 3 years","as long as possible","maximum time"],
@@ -290,10 +293,37 @@ export function useVoiceSessionV2({ options, onSelect, onNext, onBack, stepIndex
 
     // ── ON RESULT ──
     r.onresult = async (e: any) => {
-      if (!e.results[0].isFinal) return  // Skip interim results
+      const latest = e.results[e.results.length - 1]
+      // Process interim results for short commands (Chrome swallows "no","back" as interim)
+      if (!latest.isFinal) {
+        const interimText = latest[0].transcript.toLowerCase().trim()
+        if (interimText.length <= 10) {
+          const interimCmd = matchCommand(interimText)
+          if (interimCmd && (interimCmd.type === "back" || interimCmd.type === "next")) {
+            console.log("🎤 INTERIM CMD:", interimText)
+            clearAdv()
+            if (interimCmd.type === "next") { cbNext.current(); autoRestart() }
+            if (interimCmd.type === "back") { cbBack.current(); autoRestart() }
+            try { r.abort() } catch {}
+            return
+          }
+          const noOpt = optsRef.current.find(o => o.toLowerCase().startsWith("no"))
+          if (noOpt && (interimText === "no" || interimText === "nope" || interimText === "nah")) {
+            console.log("🎤 INTERIM NO-AS-OPTION:", interimText)
+            cbSel.current(noOpt!)
+            setMicState("confirmed")
+            clearAdv()
+            autoAdvTimer.current = setTimeout(() => { if (active.current) cbNext.current() }, TIMING.autoAdvanceMs)
+            try { r.abort() } catch {}
+            autoRestart()
+            return
+          }
+        }
+        return
+      }
       clearSil()
-      const alternatives = Array.from(e.results[0]).map((alt: any) => alt.transcript.toLowerCase().trim())
-      const webConfidence: number = e.results[0][0].confidence
+      const alternatives = Array.from(latest).map((alt: any) => alt.transcript.toLowerCase().trim())
+      const webConfidence: number = latest[0].confidence
       const spoken = alternatives[0]
       setTranscript(spoken)
       console.log("🎤 VOICE DEBUG:", { spoken, alternatives, webConfidence, questionIndex: stepIndex })
