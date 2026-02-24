@@ -153,7 +153,7 @@ export default function Page009() {
     if (micState==="processing") return "Matching..."
     if (micState==="paused") return "Tap to resume"
     if (transcript) return `"${transcript}"`
-    return "Speak your answer"
+    return "We'll guide you — just speak naturally"
   }
 
   if (loading) return (
@@ -248,7 +248,7 @@ export default function Page009() {
       <div style={{textAlign:"center",maxWidth:"420px",padding:"40px 24px"}}>
         <p style={{fontSize:"0.6rem",fontWeight:700,letterSpacing:"0.16em",color:GOLD,marginBottom:"20px",textTransform:"uppercase"}}>Appointment Preparation</p>
         <h2 style={{fontSize:"1.6rem",fontWeight:600,color:CHARCOAL,marginBottom:"12px",lineHeight:1.3}}>Negotiation Readiness Session</h2>
-        <p style={{fontSize:"0.875rem",color:MUTED,lineHeight:1.7,marginBottom:"36px"}}>15 guided questions. We'll guide you through each one — just speak naturally.</p>
+        <p style={{fontSize:"0.875rem",color:MUTED,lineHeight:1.7,marginBottom:"36px"}}>Let's assess your case and see how likely you are to reach a good outcome.</p>
         <button
           onClick={()=>{ setSessionStarted(true) }}
           style={{display:"inline-flex",alignItems:"center",gap:"12px",background:CHARCOAL,color:WHITE,border:"none",borderRadius:"12px",padding:"16px 32px",fontSize:"0.9rem",fontWeight:600,cursor:"pointer",boxShadow:"0 4px 16px rgba(16,18,19,0.25)",fontFamily:FONT}}
@@ -256,7 +256,7 @@ export default function Page009() {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={WHITE} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/>
           </svg>
-          Tap to Start
+          Tap to Begin
         </button>
         <p style={{fontSize:"0.72rem",color:MUTED,marginTop:"16px"}}>Microphone access required — Chrome recommended</p>
       </div>
