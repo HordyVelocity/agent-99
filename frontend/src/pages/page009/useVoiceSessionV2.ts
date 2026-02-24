@@ -93,7 +93,7 @@ const ALIASES: Record<string, string[]> = {
   // Q6: Income tax returns
   "Lodgements up to date": ["lodgements up to date","up to date","all lodged","fully lodged","all done","all up to date","current","all filed","complete","yep all done","yes all lodged","fully lodged","all done","all up to date","current","all filed","complete","yep all done","yes all lodged"],
   "Minor arrears": ["minor arrears","minor","small arrears","small","slightly behind","one or two years","a little behind","minor behind","just a bit","small","minor","minor arrears","small arrears","slightly behind","one or two years","a little behind","minor behind","just a bit"],
-  "Significant arrears": ["significant arrears","significant","large arrears","large","multiple years","several behind","quite behind","really behind","very behind","large","significant","significant arrears","multiple years","several behind","quite behind","really behind","very behind"],
+  "Major arrears": ["major arrears","major","significant arrears","significant","large arrears","large","multiple years","several behind","quite behind","really behind","very behind"],
   "Never lodged": ["never","never lodged","not filed","none lodged","never done","haven't ever","never have"],
   // Q7: Payment plan history (renamed: removed "Yes - " prefix)
   "No": ["no","nope","negative","no i haven't","have not","no i have not","haven't","i don't","i do not","no i don't","nah","nope never"],
