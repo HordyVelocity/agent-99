@@ -88,6 +88,7 @@ export default function Page009() {
   const [error, setError] = useState<string|null>(null)
   const [sessionStarted, setSessionStarted] = useState(false)
 
+  useEffect(() => { if (sessionStarted && current === 0 && micState === "idle") { setTimeout(() => toggle(), 400) } }, [sessionStarted])
   useEffect(() => { selectedRef.current = selected }, [selected])
 
   const q = QUESTIONS[current]

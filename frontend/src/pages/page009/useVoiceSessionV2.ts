@@ -82,7 +82,7 @@ const ALIASES: Record<string, string[]> = {
   "None": ["none","nothing","no notices","haven't received","no letters","no notice","haven't had any","i haven't received any","not yet","nothing yet","no not yet"],
   "Overdue notice": ["overdue","overdue notice","payment overdue","late notice","late payment"],
   "ATO Garnishee": ["garnishee","garnish","garnishing","garnishing notice","garnish she","gana she","bank garnishee","they garnished","garnished my account","frozen account","account frozen","ato","ato garnishee","tax office","tax office garnishee"],
-  "Statutory demand": ["statutory","statutory demand","formal demand","section 459"],
+  "Statutory demand": ["statutory","statutory demand","formal demand","section 459","strategy","strategy remained","strategy demand"],
   "Wind-up notice": ["wind up","winding up","wind-up","closure notice","windup","winding up notice"],
   "Bankruptcy notice": ["bankruptcy","bankrupt","bankruptcy notice","insolvency notice","insolvency"],
   // Q5: BAS returns (renamed: removed "Yes - " prefix)
