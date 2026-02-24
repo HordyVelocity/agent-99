@@ -87,8 +87,9 @@ export default function Page009() {
   const [result, setResult] = useState<any>(null)
   const [error, setError] = useState<string|null>(null)
   const [sessionStarted, setSessionStarted] = useState(false)
+  const [readyToSubmit, setReadyToSubmit] = useState(false)
 
-  useEffect(() => { if (sessionStarted && current === 0 && micState === "idle") { setTimeout(() => toggle(), 400) } }, [sessionStarted])
+  useEffect(() => { if (sessionStarted && current === 0 && micState === "idle") { setTimeout(() => toggle(), 800) } }, [sessionStarted])
   useEffect(() => { selectedRef.current = selected }, [selected])
 
   const q = QUESTIONS[current]
@@ -105,7 +106,7 @@ export default function Page009() {
     if (current < QUESTIONS.length-1) {
       setFading(true)
       setTimeout(() => { setCurrent(c => c+1); setFading(false) }, 320)
-    } else { submit(na) }
+    } else { if (micState !== "idle") toggle(); setReadyToSubmit(true) }
   }, [answers, current])
 
   const goBack = useCallback(() => {
@@ -234,7 +235,7 @@ export default function Page009() {
           Book Strategy Call to Improve Readiness &#8250;
         </button>
         <div style={{textAlign:"center",marginTop:"16px"}}>
-          <button onClick={()=>{setResult(null);setCurrent(0);setAnswers({});setSelected("");selectedRef.current="";setSessionStarted(false)}}
+          <button onClick={()=>{setResult(null);setCurrent(0);setAnswers({});setSelected("");selectedRef.current="";setSessionStarted(false);setReadyToSubmit(false)}}
             style={{background:"none",border:"none",color:MUTED,fontSize:"0.78rem",cursor:"pointer",textDecoration:"underline"}}>
             &#8592; Start over
           </button>
@@ -243,6 +244,16 @@ export default function Page009() {
     </div>
   )
 
+  if (readyToSubmit && !result) return (
+    <div style={{minHeight:"80vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:OFF_WHITE}}>
+      <div style={{maxWidth:"520px",textAlign:"center",padding:"48px 32px"}}>
+        <p style={{fontSize:"0.75rem",fontWeight:600,letterSpacing:"0.12em",color:GOLD,marginBottom:"16px"}}>ASSESSMENT COMPLETE</p>
+        <h2 style={{fontSize:"1.6rem",fontWeight:600,color:CHARCOAL,marginBottom:"12px",lineHeight:1.3}}>All 15 questions answered</h2>
+        <p style={{fontSize:"0.875rem",color:MUTED,lineHeight:1.7,marginBottom:"36px"}}>Ready to generate your personalised negotiation readiness assessment.</p>
+        <button onClick={()=>submit(answers)} style={{display:"inline-flex",alignItems:"center",gap:"12px",background:CHARCOAL,color:WHITE,border:"none",borderRadius:"12px",padding:"16px 32px",fontSize:"0.9rem",fontWeight:600,cursor:"pointer",boxShadow:"0 4px 16px rgba(16,18,19,0.25)",fontFamily:FONT}}>Generate My Assessment &#8594;</button>
+      </div>
+    </div>
+  )
   if (!sessionStarted) return (
     <div style={{minHeight:"80vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:OFF_WHITE}}>
       <style>{STYLES}</style>
