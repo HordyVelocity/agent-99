@@ -1,1 +1,244 @@
+/* =============================================================
+   TDM ASCEND / AGENT99 — BRAND THEME (CORRECTED)
+   Re-skinned from Figma export → TDM production palette
+   Date: 25 February 2026
+   Source: Page009.tsx committed constants (production truth)
+
+   BRAND TOKENS (from Page 009 codebase):
+   - CHARCOAL:   #101213  — primary dark, headings, buttons
+   - CHARCOAL2:  #2A2D2E  — gradient start, secondary dark
+   - GOLD:       #B8973A  — accents, CTAs, highlights, progress
+   - GOLD_BG:    #FAF6ED  — light gold tint backgrounds
+   - OFF_WHITE:  #F7F6F4  — page backgrounds
+   - BORDER:     #E4E2DD  — card borders, dividers
+   - MUTED:      #8A8680  — secondary text, placeholders
+   - WHITE:      #FFFFFF  — card surfaces, button text
+
+   GREEN USAGE (state only — never brand):
+   - #2D6B3F  — confirmed/success states (mic, checkmarks, READY badge)
+   - #1A4028  — dark green gradient end (confirmed mic)
+   - #B8860B  — amber/unsure state
+   - #8B2020  — error state
+   ============================================================= */
+
 @import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+
+  /* === CORE BRAND — CHARCOAL + GOLD === */
+  --background: #f7f6f4;
+  --foreground: #101213;
+  --card: #ffffff;
+  --card-foreground: #101213;
+  --popover: #ffffff;
+  --popover-foreground: #101213;
+
+  /* Primary = TDM Charcoal (was #2d5016 olive green) */
+  --primary: #101213;
+  --primary-foreground: #ffffff;
+
+  /* Secondary = Off-white / warm light */
+  --secondary: #f7f6f4;
+  --secondary-foreground: #101213;
+
+  /* Muted = Warm gray */
+  --muted: #f7f6f4;
+  --muted-foreground: #8a8680;
+
+  /* Accent = TDM Gold (was #4a7c2a green) */
+  --accent: #b8973a;
+  --accent-foreground: #ffffff;
+
+  /* Destructive = Error red */
+  --destructive: #8b2020;
+  --destructive-foreground: #ffffff;
+
+  /* Borders & Inputs — warm gray */
+  --border: #e4e2dd;
+  --input: transparent;
+  --input-background: #f7f6f4;
+  --switch-background: #cbced4;
+
+  /* Typography weights */
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+
+  /* Focus ring = TDM Gold */
+  --ring: #b8973a;
+
+  /* Chart colours — TDM palette */
+  --chart-1: #101213;
+  --chart-2: #b8973a;
+  --chart-3: #2d6b3f;
+  --chart-4: #2a2d2e;
+  --chart-5: #8a8680;
+
+  --radius: 0.625rem;
+
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #101213;
+  --sidebar-primary: #101213;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f7f6f4;
+  --sidebar-accent-foreground: #101213;
+  --sidebar-border: #e4e2dd;
+  --sidebar-ring: #b8973a;
+
+  /* === TDM EXTENDED TOKENS (page-level use) === */
+  --tdm-charcoal: #101213;
+  --tdm-charcoal2: #2a2d2e;
+  --tdm-gold: #b8973a;
+  --tdm-gold-bg: #faf6ed;
+  --tdm-off-white: #f7f6f4;
+  --tdm-border: #e4e2dd;
+  --tdm-muted: #8a8680;
+  --tdm-green-confirmed: #2d6b3f;
+  --tdm-green-dark: #1a4028;
+  --tdm-amber-unsure: #b8860b;
+  --tdm-red-error: #8b2020;
+  --tdm-dark-overlay: rgba(16, 18, 19, 0.85);
+}
+
+.dark {
+  --background: #101213;
+  --foreground: #f7f6f4;
+  --card: #2a2d2e;
+  --card-foreground: #f7f6f4;
+  --popover: #2a2d2e;
+  --popover-foreground: #f7f6f4;
+  --primary: #b8973a;
+  --primary-foreground: #101213;
+  --secondary: #2a2d2e;
+  --secondary-foreground: #f7f6f4;
+  --muted: #2a2d2e;
+  --muted-foreground: #8a8680;
+  --accent: #b8973a;
+  --accent-foreground: #101213;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: rgba(228, 226, 221, 0.15);
+  --input: #2a2d2e;
+  --ring: #b8973a;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: #b8973a;
+  --chart-2: #2d6b3f;
+  --chart-3: #f7f6f4;
+  --chart-4: #8a8680;
+  --chart-5: #b8860b;
+  --sidebar: #101213;
+  --sidebar-foreground: #f7f6f4;
+  --sidebar-primary: #b8973a;
+  --sidebar-primary-foreground: #101213;
+  --sidebar-accent: #2a2d2e;
+  --sidebar-accent-foreground: #f7f6f4;
+  --sidebar-border: rgba(228, 226, 221, 0.15);
+  --sidebar-ring: #b8973a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Montserrat', system-ui, sans-serif;
+  }
+
+  /**
+  * Default typography — Montserrat (matching Page 009 production)
+  * These are in @layer base, so Tailwind utility classes override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
