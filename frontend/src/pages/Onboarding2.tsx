@@ -100,12 +100,14 @@ export function Onboarding2() {
         </div>
 
         {/* CTA — pill style */}
+        <div style={{ textAlign: "center" }}>
         <button
           onClick={() => { window.location.href = 'https://ascend-membership.flutterflow.app/' }}
           style={{ height: "44px", background: BTN_COLOR, color: WHITE, border: "none", borderRadius: "24px", padding: "0 48px", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", letterSpacing: "0.02em", fontFamily: FONT }}
         >
           Start Assessment →
         </button>
+        </div>
       </div>
       </div>
     </div>
