@@ -39,11 +39,11 @@ const STYLES = `
   @keyframes pulseGlow { 0%,100%{box-shadow:0 2px 10px rgba(16,18,19,0.2)} 50%{box-shadow:0 4px 24px rgba(191,155,48,0.5)} } @keyframes glideup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 `
 
-function getLabel(s: number) { return s>=66?"High Readiness":s>=31?"Moderate Readiness":"Low Readiness" }
+function getLabel(s: number) { return s>=31?"Ready":"Not Ready" }
 function getMeans(s: number) {
-  if (s>=66) return "Your case is well-positioned for ATO negotiation. Strong compliance indicators and financial stability give you a solid foundation for a successful outcome."
-  if (s>=31) return "Based on your responses, your case has a moderate likelihood of successful negotiation. Strengthening your compliance position and documenting financial stability will significantly improve your outcomes."
-  return "Your case faces significant challenges in ATO negotiation. Immediate specialist advice is recommended before engaging the ATO directly."
+  if (s>=66) return "Based on your responses, your case is positioned for ATO negotiation. A Tax Debt Manager specialist will review your details and guide you through the next steps."
+  if (s>=31) return "Based on your responses, your case is positioned for ATO negotiation. A Tax Debt Manager specialist will review your details and guide you through the next steps."
+  return "Based on your responses, we recommend speaking with a Tax Debt Manager specialist to explore your options before proceeding."
 }
 
 function ScoreCounter({ target }: { target: number }) {
@@ -201,8 +201,8 @@ export default function Page009() {
         <p style={{fontSize:"0.58rem",fontWeight:700,letterSpacing:"0.16em",color:GOLD,textAlign:"center",marginBottom:"28px",textTransform:"uppercase"}}>Negotiation Readiness Summary</p>
         <h2 style={{fontSize:"1.9rem",fontWeight:700,color:CHARCOAL,textAlign:"center",marginBottom:"6px"}}>{getLabel(result.score)}</h2>
         <p style={{textAlign:"center",marginBottom:"32px"}}>
-          <span style={{fontSize:"1.15rem",fontWeight:600,color:GOLD}}><ScoreCounter target={result.score}/></span>
-          <span style={{fontSize:"1rem",color:MUTED,fontWeight:400}}> / 100</span>
+          <span style={{display:"none"}}><ScoreCounter target={result.score}/></span>
+          <span style={{display:"none"}}> / 100</span>
         </p>
         <hr style={{border:"none",borderTop:`1px solid ${BORDER}`,marginBottom:"28px"}}/>
         <h3 style={{fontSize:"0.82rem",fontWeight:700,color:CHARCOAL,marginBottom:"10px",textTransform:"uppercase",letterSpacing:"0.06em"}}>What this means</h3>
@@ -255,7 +255,7 @@ export default function Page009() {
           </div>
         )}
         <button style={{width:"100%",background:CHARCOAL,color:WHITE,border:"none",borderRadius:"10px",padding:"16px",fontSize:"0.875rem",fontWeight:600,cursor:"pointer",letterSpacing:"0.03em",boxShadow:"0 2px 12px rgba(16,18,19,0.22)"}}>
-          Book Strategy Call to Improve Readiness &#8250;
+          {result.score >= 31 ? "Please click here to continue ›" : "Start over to improve readiness ›"}
         </button>
         <div style={{textAlign:"center",marginTop:"16px"}}>
           <button onClick={()=>{setResult(null);setCurrent(0);setAnswers({});setSelected("");selectedRef.current="";setSessionStarted(false);setReadyToSubmit(false)}}

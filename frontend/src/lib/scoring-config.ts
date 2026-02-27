@@ -1,12 +1,16 @@
 /**
- * ASCEND / AGENT99 — SCORING CONFIG v2.1 (Frontend)
+ * ASCEND / AGENT99 — SCORING CONFIG v3.0 (Frontend)
  * ══════════════════════════════════════════════════
- * Ported from backend/functions/scoring-config.js
- * Zelly edits weights here — logic lives in scoring.ts
- *
- * v2.1 Changes: Remove "Yes -" prefixes, fix stale Q2/Q3 keys,
- *               rename Q9 to Lockdown DPN/Non-lockdown DPN,
- *               Q11 hyphen → "to" format
+ * Updated for 12Q Blueprint v7.1 (28 Feb 2026)
+ * 3 fields (debtBand, atoLatestAction, idealOutcome) moved to 4Q onboarding
+ * Scoring now based on 12
+cat > src/lib/scoring-config.ts << 'SCOREEOF'
+/**
+ * ASCEND / AGENT99 — SCORING CONFIG v3.0 (Frontend)
+ * ══════════════════════════════════════════════════
+ * Updated for 12Q Blueprint v7.1 (28 Feb 2026)
+ * 3 fields (debtBand, atoLatestAction, idealOutcome) moved to 4Q onboarding
+ * Scoring now based on 12 voice questions only
  */
 
 export const THRESHOLDS = {
@@ -15,54 +19,43 @@ export const THRESHOLDS = {
 };
 
 export const BASE_SCORE = 50;
-export const MIN_ANSWERS = 10;
+export const MIN_ANSWERS = 8;
 
 export const SCORING_MAP: Record<string, Record<string, number>> = {
-  q1: { "Individual / Sole Trader": 3, "Company": 2, "Partnership": 1, "Trust": 0 },
-  q2: { "$15,000 to $250,000": 5, "$250,000 to $500,000": 2, "$500,000 to $1,000,000": -2, "$1,000,000+": -4 },
-  q3: { "Less than 6 months": 4, "6 to 12 months": 1, "1 to 2 years": -2, "More than 2 years": -4 },
-  q4: { "None": 5, "Overdue notice": 2, "ATO Garnishee": -2, "Statutory demand": -4, "Wind-up notice": -5, "Bankruptcy notice": -6 },
-  q5: { "All current": 6, "Mostly current": 2, "Partially lodged": -2, "Not current": -5 },
-  q6: { "Lodgements up to date": 4, "Minor arrears": 1, "Significant arrears": -2, "Never lodged": -4 },
-  q7: { "No payment plan": 1, "Successful": 3, "Defaulted": -3, "Attempted - rejected": -2 },
-  q8: { "Yes I am": 1, "No I'm not": 0, "Recently resigned": -2 },
-  q9: { "No DPN received": 5, "Non-lockdown DPN": -3, "Lockdown DPN": -6, "Unsure": -1 },
-  q10: { "No liabilities": 3, "Small amount": 1, "Significant": -2, "Major liabilities": -4 },
-  q11: { "Under $500": -4, "$500 to $1,500": 0, "$1,500 to $3,000": 3, "Over $3,000": 5 },
-  q12: { "Less than a year": 2, "1 to 2 years": 1, "2 to 3 years": 0, "Over 3 years": -1 },
-  q13: { "Growing": 4, "Stable": 2, "Declining": -2, "No income": -4 },
-  q14: { "Keep business trading": 2, "Negotiate debt reduction": 1, "Wind down responsibly": 0, "Avoid bankruptcy": -1 },
-  q15: { "Planning ahead": 4, "Moderate urgency": 1, "Very urgent": -2, "ATO Action": -4 },
+  q1: { "Negotiate ATO Debt / Avoid insolvency": 2, "Wind down responsibly": 0 },
+  q2: { "Individual": 3, "Sole Trader": 3, "Partnership": 1, "Company": 2, "Trust": 0 },
+  q3: { "Less than 12 months": 4, "1 – 2 years": 1, "2 – 5 years": -2, "5+ years": -4 },
+  q4: { "Unsure": -1, "Partially lodged": -2, "Lodged and up to date": 6, "Never lodged": -5 },
+  q5: { "Yes": -3, "No": 4, "Unsure": -1 },
+  q6: { "Unsure": -1, "Partially lodged": -2, "Lodged and up to date": 4, "Never lodged": -4 },
+  q7: { "Never": 1, "In current payment plan": 3, "Yes but defaulted": -3, "Attempted but rejected": -2 },
+  q8: { "Yes, I am": 1, "No, I'm not": 0 },
+  q9: { "Yes, I can": 4, "No, I can't": -4, "Potentially / Maybe": 0 },
+  q10: { "Up to 1 year": 2, "1 – 2 years": 1, "2 – 3 years": 0 },
+  q11: { "Growing": 4, "Stable": 2, "Declining": -2 },
+  q12: { "Not yet urgent / planning ahead": 4, "Moderate urgency": 1, "Very urgent": -2 },
 };
 
 export const STRENGTH_MAP: Record<string, { answers: string[]; message: string }> = {
-  q1: { answers: ["Individual / Sole Trader"], message: "Simpler structure reduces compliance complexity" },
-  q2: { answers: ["$15,000 to $250,000"], message: "Debt amount is within manageable negotiation range" },
-  q3: { answers: ["Less than 6 months"], message: "Early intervention significantly improves outcomes" },
-  q5: { answers: ["All current", "Mostly current"], message: "Strong BAS compliance demonstrates good faith to the ATO" },
-  q6: { answers: ["Lodgements up to date"], message: "Complete tax return history strengthens your position" },
-  q7: { answers: ["Successful"], message: "Previous successful payment plan shows track record" },
-  q9: { answers: ["No DPN received"], message: "No Director Penalty Notice — full range of options available" },
-  q10: { answers: ["No liabilities"], message: "No personal liabilities simplifies resolution path" },
-  q11: { answers: ["$1,500 to $3,000", "Over $3,000"], message: "Strong payment capacity supports favorable plan terms" },
-  q13: { answers: ["Growing", "Stable"], message: "Stable or growing income supports sustainable arrangements" },
-  q15: { answers: ["Planning ahead"], message: "Proactive approach gives maximum time for negotiation" },
+  q2: { answers: ["Individual", "Sole Trader"], message: "Simpler structure reduces compliance complexity" },
+  q3: { answers: ["Less than 12 months"], message: "Early intervention significantly improves outcomes" },
+  q4: { answers: ["Lodged and up to date"], message: "Strong BAS compliance demonstrates good faith to the ATO" },
+  q5: { answers: ["No"], message: "No outstanding superannuation simplifies your position" },
+  q6: { answers: ["Lodged and up to date"], message: "Complete tax return history strengthens your position" },
+  q7: { answers: ["In current payment plan"], message: "Active payment plan shows commitment to the ATO" },
+  q9: { answers: ["Yes, I can"], message: "Strong payment capacity supports favorable plan terms" },
+  q11: { answers: ["Growing", "Stable"], message: "Stable or growing income supports sustainable arrangements" },
+  q12: { answers: ["Not yet urgent / planning ahead"], message: "Proactive approach gives maximum time for negotiation" },
 };
 
 export const ACTION_MAP: Record<string, { question: string; answers: string[]; message: string }> = {
-  q4_garnishee: { question: "q4", answers: ["ATO Garnishee"], message: "Seek immediate legal advice — garnishee notice requires urgent response" },
-  q4_statutory: { question: "q4", answers: ["Statutory demand"], message: "URGENT: You have 21 days to respond to a statutory demand" },
-  q4_windup: { question: "q4", answers: ["Wind-up notice"], message: "CRITICAL: Wind-up proceedings require immediate professional assistance" },
-  q4_bankruptcy: { question: "q4", answers: ["Bankruptcy notice"], message: "CRITICAL: Bankruptcy notice — engage insolvency practitioner immediately" },
-  q5_notcurrent: { question: "q5", answers: ["Not current", "Partially lodged"], message: "Prioritise lodging outstanding BAS returns before ATO negotiation" },
-  q6_arrears: { question: "q6", answers: ["Significant arrears", "Never lodged"], message: "Lodge outstanding income tax returns to unlock negotiation options" },
-  q7_defaulted: { question: "q7", answers: ["Defaulted"], message: "Previous default will be considered — prepare explanation of changed circumstances" },
-  q9_lockdown: { question: "q9", answers: ["Lockdown DPN"], message: "CRITICAL: Lockdown DPN — directors face personal liability. Seek specialist advice immediately" },
-  q9_nonlockdown: { question: "q9", answers: ["Non-lockdown DPN"], message: "Non-lockdown DPN — you still have options but must act within timeframe" },
-  q10_overwhelming: { question: "q10", answers: ["Major liabilities"], message: "Consider formal insolvency advice to assess all available options" },
-  q11_low: { question: "q11", answers: ["Under $500"], message: "Low payment capacity may require debt reduction negotiation or alternative arrangements" },
-  q13_noincome: { question: "q13", answers: ["No income"], message: "No income stream — consider whether voluntary administration may be appropriate" },
-  q13_declining: { question: "q13", answers: ["Declining"], message: "Declining income — prepare cash flow projections for ATO negotiation" },
-  q15_critical: { question: "q15", answers: ["ATO Action"], message: "ATO enforcement imminent — seek professional representation before responding" },
-  q15_high: { question: "q15", answers: ["Very urgent"], message: "Engage professional support promptly to preserve negotiation options" },
+  q4_neverlodged: { question: "q4", answers: ["Never lodged"], message: "Prioritise lodging outstanding BAS returns before ATO negotiation" },
+  q4_partial: { question: "q4", answers: ["Partially lodged"], message: "Complete outstanding BAS lodgements to strengthen your negotiation position" },
+  q5_super: { question: "q5", answers: ["Yes"], message: "Outstanding superannuation must be addressed — this is a priority for the ATO" },
+  q6_neverlodged: { question: "q6", answers: ["Never lodged"], message: "Lodge outstanding income tax returns to unlock negotiation options" },
+  q6_partial: { question: "q6", answers: ["Partially lodged"], message: "Complete outstanding tax return lodgements before engaging the ATO" },
+  q7_defaulted: { question: "q7", answers: ["Yes but defaulted"], message: "Previous default will be considered — prepare explanation of changed circumstances" },
+  q9_nocapacity: { question: "q9", answers: ["No, I can't"], message: "Limited payment capacity may require debt reduction negotiation or alternative arrangements" },
+  q11_declining: { question: "q11", answers: ["Declining"], message: "Declining income — prepare cash flow projections for ATO negotiation" },
+  q12_veryurgent: { question: "q12", answers: ["Very urgent"], message: "Engage professional support promptly to preserve negotiation options" },
 };
