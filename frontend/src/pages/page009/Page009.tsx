@@ -151,7 +151,7 @@ export default function Page009() {
       if (caseId) {
         const caseRef = doc(db, "cases", caseId)
         await updateDoc(caseRef, {
-          readinessSnapshot: { ...snapshot, completedAt: serverTimestamp() },
+          readinessSnapshot: { ...snapshot, atoLatestAction: "pending_4q", debtBand: "pending_4q", idealOutcome: "pending_4q", completedAt: serverTimestamp() },
           readinessComplete: true,
           readinessResult: data.score >= 31 ? "ready" : "not_ready",
           status: "readinessComplete",
