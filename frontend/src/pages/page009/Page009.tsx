@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import { useVoiceSessionV2 } from "./useVoiceSessionV2"
 import { calculateScoreLocal } from "../../lib/scoring"
+import { doc, updateDoc, serverTimestamp } from "firebase/firestore"
+import { db } from "../../firebase"
+import { mapAnswersToSnapshot } from "./answerMap"
 
 const QUESTIONS = [
   {id:"q1",label:"What type of business structure?",options:["Individual / Sole Trader","Company","Trust","Partnership"]},
@@ -89,6 +92,9 @@ export default function Page009() {
   const [sessionStarted, setSessionStarted] = useState(false)
   const [readyToSubmit, setReadyToSubmit] = useState(false)
 
+  // B4: Get caseId from URL query params
+  const caseId = new URLSearchParams(window.location.search).get("caseId")
+
   useEffect(() => { if (sessionStarted && current === 0 && micState === "idle") { setTimeout(() => toggle(), 1800) } }, [sessionStarted])
   useEffect(() => { selectedRef.current = selected }, [selected])
 
@@ -138,13 +144,34 @@ export default function Page009() {
     stepIndex: current,
   })
 
-  const submit = (fa: Record<string,string>) => {
+  const submit = async (fa: Record<string,string>) => {
     if (micState !== "idle") toggle()
     setLoading(true); setError(null)
-    const data = calculateScoreLocal(fa)
-    if (data.success) { setResult(data); window.scrollTo({top:0,behavior:"smooth"}) }
-    else { setError(data.error || "Scoring failed") }
+    try {
+      const data = calculateScoreLocal(fa)
+      if (!data.success) { setError(data.error || "Scoring failed"); setLoading(false); return }
+      const snapshot = mapAnswersToSnapshot(fa)
+      if (caseId) {
+        const caseRef = doc(db, "cases", caseId)
+        await updateDoc(caseRef, {
+          readinessSnapshot: { ...snapshot, completedAt: serverTimestamp() },
+          readinessComplete: true,
+          readinessResult: data.score >= 31 ? "ready" : "not_ready",
+          status: "readinessComplete",
+          updatedAt: serverTimestamp(),
+        })
+        console.log("B4: readinessSnapshot written to cases/" + caseId)
+      } else {
+        console.warn("B4: No caseId in URL")
+      }
+      setResult(data)
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    } catch (err) {
+      console.error("B4: Firestore write failed:", err)
+      setError("Assessment complete but save failed.")
+    }
     setLoading(false)
+  }
   }
 
   const micLabel = () => {
