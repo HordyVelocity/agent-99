@@ -172,7 +172,6 @@ export default function Page009() {
     }
     setLoading(false)
   }
-  }
 
   const micLabel = () => {
     if (micState === "listening") return "Listening..."
