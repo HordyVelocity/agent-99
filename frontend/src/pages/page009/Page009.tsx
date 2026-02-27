@@ -6,21 +6,18 @@ import { db } from "../../firebase"
 import { mapAnswersToSnapshot } from "./answerMap"
 
 const QUESTIONS = [
-  {id:"q1",label:"What type of business structure?",options:["Individual / Sole Trader","Company","Trust","Partnership"]},
-  {id:"q2",label:"Approximate total ATO debt?",options:["$15,000 to $250,000","$250,000 to $500,000","$500,000 to $1,000,000","$1,000,000+"]},
-  {id:"q3",label:"How long has this debt been outstanding?",options:["Less than 6 months","6 to 12 months","1 to 2 years","More than 2 years"]},
-  {id:"q4",label:"Which notices has the ATO sent?",options:["None","Overdue notice","ATO Garnishee","Statutory demand","Wind-up notice","Bankruptcy notice"]},
-  {id:"q5",label:"Have BAS returns been lodged and current?",options:["All current","Mostly current","Partially lodged","Not current"]},
-  {id:"q6",label:"What is the current status on income tax returns?",options:["Lodgements up to date","Minor arrears","Major arrears","Never lodged"]},
-  {id:"q7",label:"Have you attempted a payment plan before?",options:["No payment plan","Successful","Defaulted","Attempted - rejected"]},
-  {id:"q8",label:"Are you currently a director of the company?",options:["Yes I am","No I'm not","Recently resigned"]},
-  {id:"q9",label:"Has the ATO issued a Director Penalty Notice (DPN)?",options:["No DPN received","Lockdown DPN","Non-lockdown DPN","Unsure"]},
-  {id:"q10",label:"Are there other personal liabilities or guarantees?",options:["No liabilities","Small amount","Significant","Major liabilities"]},
-  {id:"q11",label:"How much can you contribute monthly to a payment plan?",options:["Under $500","$500 to $1,500","$1,500 to $3,000","Over $3,000"]},
-  {id:"q12",label:"What timeframe are you seeking for a payment plan?",options:["Less than a year","1 to 2 years","2 to 3 years","Over 3 years"]},
-  {id:"q13",label:"How stable is your business income?",options:["Growing","Stable","Declining","No income"]},
-  {id:"q14",label:"What is your primary goal?",options:["Keep business trading","Negotiate debt reduction","Wind down responsibly","Avoid bankruptcy"]},
-  {id:"q15",label:"How urgent is this situation?",options:["Planning ahead","Moderate urgency","Very urgent","ATO Action"]},
+  {id:"q1",label:"What is your primary goal?",options:["Negotiate ATO Debt / Avoid insolvency","Wind down responsibly"]},
+  {id:"q2",label:"What type of business structure do you have?",options:["Individual","Sole Trader","Partnership","Company","Trust"]},
+  {id:"q3",label:"How long has this debt been outstanding?",options:["Less than 12 months","1 – 2 years","2 – 5 years","5+ years"]},
+  {id:"q4",label:"Have all BAS returns been lodged?",options:["Unsure","Partially lodged","Lodged and up to date","Never lodged"]},
+  {id:"q5",label:"Is there outstanding superannuation?",options:["Yes","No","Unsure"]},
+  {id:"q6",label:"What is the current status on income tax returns?",options:["Unsure","Partially lodged","Lodged and up to date","Never lodged"]},
+  {id:"q7",label:"Have you attempted a payment plan before?",options:["Never","In current payment plan","Yes but defaulted","Attempted but rejected"]},
+  {id:"q8",label:"Are you the individual, sole trader or director of the entity for the debt?",options:["Yes, I am","No, I'm not"]},
+  {id:"q9",label:"Can you contribute on a monthly basis to a payment plan?",options:["Yes, I can","No, I can't","Potentially / Maybe"]},
+  {id:"q10",label:"What timeframe are you seeking for a payment plan?",options:["Up to 1 year","1 – 2 years","2 – 3 years"]},
+  {id:"q11",label:"How is your business income trending?",options:["Growing","Stable","Declining"]},
+  {id:"q12",label:"How urgent is your situation?",options:["Not yet urgent / planning ahead","Moderate urgency","Very urgent"]},
 ]
 
 const CHARCOAL = "#101213"
@@ -274,7 +271,7 @@ export default function Page009() {
     <div style={{minHeight:"80vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:OFF_WHITE}}>
       <div style={{maxWidth:"520px",textAlign:"center",padding:"48px 32px"}}>
         <p style={{fontSize:"0.75rem",fontWeight:600,letterSpacing:"0.12em",color:GOLD,marginBottom:"16px"}}>ASSESSMENT COMPLETE</p>
-        <h2 style={{fontSize:"1.6rem",fontWeight:600,color:CHARCOAL,marginBottom:"12px",lineHeight:1.3}}>All 15 questions answered</h2>
+        <h2 style={{fontSize:"1.6rem",fontWeight:600,color:CHARCOAL,marginBottom:"12px",lineHeight:1.3}}>All 12 questions answered</h2>
         <p style={{fontSize:"0.875rem",color:MUTED,lineHeight:1.7,marginBottom:"36px"}}>Ready to generate your personalised negotiation readiness assessment.</p>
         <button onClick={()=>submit(answers)} style={{display:"inline-flex",alignItems:"center",gap:"12px",background:CHARCOAL,color:WHITE,border:"none",borderRadius:"12px",padding:"16px 32px",fontSize:"0.9rem",fontWeight:600,cursor:"pointer",boxShadow:"0 4px 16px rgba(16,18,19,0.25)",fontFamily:FONT}}>Generate My Assessment &#8594;</button>
       </div>
