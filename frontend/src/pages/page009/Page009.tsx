@@ -207,6 +207,7 @@ export default function Page009() {
         <hr style={{border:"none",borderTop:`1px solid ${BORDER}`,marginBottom:"28px"}}/>
         <h3 style={{fontSize:"0.82rem",fontWeight:700,color:CHARCOAL,marginBottom:"10px",textTransform:"uppercase",letterSpacing:"0.06em"}}>What this means</h3>
         <p style={{fontSize:"0.875rem",color:"#4A4845",lineHeight:1.8,marginBottom:"32px"}}>{getMeans(result.score)}</p>
+        {result.score < 31 && <p style={{fontSize:"0.82rem",color:"#B8973A",fontWeight:600,marginBottom:"24px"}}>Please see the immediate actions below — these are common and easily addressed.</p>}
         {result.immediateActions?.length>0&&(
           <div style={{marginBottom:"28px"}}>
             <div style={{background:OFF_WHITE,borderRadius:"12px",padding:"20px",border:`1px solid ${BORDER}`}}>
@@ -254,7 +255,7 @@ export default function Page009() {
             </div>
           </div>
         )}
-        <button style={{width:"100%",background:CHARCOAL,color:WHITE,border:"none",borderRadius:"10px",padding:"16px",fontSize:"0.875rem",fontWeight:600,cursor:"pointer",letterSpacing:"0.03em",boxShadow:"0 2px 12px rgba(16,18,19,0.22)"}}>
+        <button onClick={()=>{if(result.score>=31){window.location.href="/post-assessment-video"}else{setResult(null);setCurrent(0);setAnswers({});setSelected("")}}} style={{width:"100%",background:CHARCOAL,color:WHITE,border:"none",borderRadius:"10px",padding:"16px",fontSize:"0.875rem",fontWeight:600,cursor:"pointer",letterSpacing:"0.03em",boxShadow:"0 2px 12px rgba(16,18,19,0.22)"}}>
           {result.score >= 31 ? "Please click here to continue ›" : "Start over to improve readiness ›"}
         </button>
         <div style={{textAlign:"center",marginTop:"16px"}}>

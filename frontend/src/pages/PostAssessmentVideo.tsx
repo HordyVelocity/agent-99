@@ -108,7 +108,7 @@ export function PostAssessmentVideo() {
 
         {/* CTA — pill style */}
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => window.location.href='https://ascend-membership.flutterflow.app/page005NewCase_V4'}
           style={{ height: "44px", background: BTN_COLOR, color: WHITE, border: "none", borderRadius: "24px", padding: "0 48px", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", letterSpacing: "0.02em", fontFamily: FONT }}
         >
           Submit Your Case →
