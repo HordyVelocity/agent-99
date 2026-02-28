@@ -4,7 +4,6 @@ import { TdmHeader } from "../components/TdmHeader"
 
 const C="#101213",G="#B8973A",W="#FFFFFF",O="#F7F6F4",B="#E4E2DD",M="#8A8784"
 const F="'Inter',system-ui,-apple-system,sans-serif"
-const GOLD_BG="#FAF6ED"
 
 const QUESTIONS=[
   {id:"ob1",label:"Who are you completing this for?",options:["Myself as an Individual","Myself as a Sole Trader","For myself as a Business Owner","My Accountancy Client","My Advisory/Brokerage Client"]},
@@ -50,7 +49,7 @@ export default function Onboarding4Q(){
 
   return(
     <div style={{minHeight:"100vh",background:O,fontFamily:F}}>
-      <TdmHeader activePage="onboarding"/>
+      <TdmHeader />
       <div style={{maxWidth:"580px",margin:"0 auto",padding:"40px 24px"}}>
         <p style={{fontSize:"0.58rem",fontWeight:700,letterSpacing:"0.16em",color:G,textAlign:"center",marginBottom:"8px",textTransform:"uppercase"}}>Quick Qualification</p>
         <p style={{fontSize:"0.75rem",color:M,textAlign:"center",marginBottom:"28px"}}>Question {current+1} of {QUESTIONS.length}</p>

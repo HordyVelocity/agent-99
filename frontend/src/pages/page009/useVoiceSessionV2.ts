@@ -101,7 +101,6 @@ const ALIASES: Record<string, string[]> = {
   "Potentially / Maybe": ["maybe","potentially","perhaps","possibly","depends","not sure","might be able","could possibly","it depends","uncertain"],
   // DX-10: Payment timeframe
   "Up to 1 year": ["up to a year","under a year","within a year","12 months","less than a year","short term","quickly","as fast as possible","after one year","one year","about a year","up to one year"],
-  "1 \u2013 2 years": ["1 to 2","one to two","about two years","year and a half","18 months","couple of years","a year or two"],
   "2 \u2013 3 years": ["2 to 3","two to three","about three years","couple of years","thirty months","24 to 36","longer term"],
   // DX-11: Income trending
   "Growing": ["growing","growth","increasing","going up","expanding","improving","getting better","on the up","good"],

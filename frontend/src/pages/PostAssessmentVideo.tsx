@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { TdmHeader } from '../components/TdmHeader'
 import heroBroker from '../assets/hero-broker.jpg'
 
@@ -9,7 +8,6 @@ const OFF_WHITE = "#FAF8F5"
 const BORDER = "#D4D4D4"
 const MUTED = "#6B6B6B"
 const WHITE = "#FFFFFF"
-const ACCENT = "#5B5FC7"
 const FONT = "'Montserrat', system-ui, sans-serif"
 
 const STYLES = `
@@ -41,7 +39,6 @@ const STEPS = [
 ]
 
 export function PostAssessmentVideo() {
-  const navigate = useNavigate()
 
   return (
     <div style={{ minHeight: "100vh", background: OFF_WHITE, display: "flex", flexDirection: "column", fontFamily: FONT }}>

@@ -12,7 +12,6 @@ const LIGHT_GREY = "#F7F7F7"
 const BORDER = "#D4D4D4"
 const MUTED = "#6B6B6B"
 const WHITE = "#FFFFFF"
-const ACCENT = "#5B5FC7"
 const BLUE_CHECK = "#6B7CED"
 const FONT = "'Montserrat', system-ui, sans-serif"
 
