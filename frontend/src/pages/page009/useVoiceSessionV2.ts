@@ -81,7 +81,7 @@ const ALIASES: Record<string, string[]> = {
   // DX-4: BAS returns
   "Unsure": ["unsure","not sure","don't know","uncertain","maybe","possibly","not certain","no idea","i'm not sure","what's that"],
   "Partially lodged": ["partial","partially","some lodged","partially lodged","some done","mixed","half done","some of them"],
-  "Lodged and up to date": ["lodged","up to date","all current","yes all current","fully lodged","all done","completely current","all lodged","yes current","yeah all current"],
+  "Lodged and up to date": ["up to date","all current","yes all current","fully lodged","all done","completely current","all lodged","yes current","yeah all current"],
   "Never lodged": ["never","never lodged","not filed","none lodged","never done","haven't ever","never have","not done","not lodged"],
   // DX-5: Superannuation
   "Yes": ["yes","yep","yeah","there is","outstanding super","super owing","behind on super","owe super","yes there is"],
@@ -100,7 +100,7 @@ const ALIASES: Record<string, string[]> = {
   "No, I can't": ["no","no i can't","nope","can't afford","nothing","zero","no capacity","i can't","not able","unable","negative"],
   "Potentially / Maybe": ["maybe","potentially","perhaps","possibly","depends","not sure","might be able","could possibly","it depends","uncertain"],
   // DX-10: Payment timeframe
-  "Up to 1 year": ["up to a year","under a year","within a year","12 months","less than a year","short term","quickly","as fast as possible"],
+  "Up to 1 year": ["up to a year","under a year","within a year","12 months","less than a year","short term","quickly","as fast as possible","after one year","one year","about a year","up to one year"],
   "1 \u2013 2 years": ["1 to 2","one to two","about two years","year and a half","18 months","couple of years","a year or two"],
   "2 \u2013 3 years": ["2 to 3","two to three","about three years","couple of years","thirty months","24 to 36","longer term"],
   // DX-11: Income trending
