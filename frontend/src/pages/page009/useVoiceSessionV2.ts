@@ -64,83 +64,54 @@ const NO_WORDS = [
 // ── ALIAS MAP ──
 // ~240 Australian tax/colloquial phrases mapped to exact option text
 const ALIASES: Record<string, string[]> = {
-  // Q1: Business structure
-  "Individual / Sole Trader": ["individual","sole trader","sole","soul trader","salt trader","so trader","so ill trader","sole business","sole trade","im a sole trader","i am a sole trader","sole proprietor","self employed","self-employed"],
-  "Company": ["company","pty ltd","pty","proprietary","corporation","corp","companies","i have a company","my company","limited company"],
-  "Trust": ["trust","family trust","unit trust","discretionary trust","trust structure"],
+  // DX-1: Primary goal
+  "Negotiate ATO Debt / Avoid insolvency": ["negotiate","keep trading","stay open","continue trading","keep operating","stay in business","keep going","save the business","avoid insolvency","negotiate debt","reduce debt","settle","pay less","lower the debt","avoid bankruptcy","not go bankrupt"],
+  "Wind down responsibly": ["wind down","close responsibly","shut down","wind up","close business","orderly closure","wind it down","close it down","responsibly"],
+  // DX-2: Business structure
+  "Individual": ["individual","myself","personal","me","just me","im an individual","i am an individual","personal capacity"],
+  "Sole Trader": ["sole trader","sole","soul trader","sole proprietor","self employed","self-employed","sole business","sole trade","im a sole trader"],
   "Partnership": ["partnership","partner","partners","business partner","business partners"],
-  // Q2: ATO debt amount
-  "$15,000 to $250,000": ["fifteen thousand","under 250","less than 250","small debt","manageable","15 to 250","under 250 thousand","under two fifty","hundred thousand","about 100","about 50","fifty thousand"],
-  "$250,000 to $500,000": ["250 to 500","two fifty to five hundred","quarter million","half a million","250 thousand","between 250 and 500","about 300","about 400","three hundred thousand","four hundred thousand"],
-  "$500,000 to $1,000,000": ["500 to a million","five hundred thousand","half a million to a million","large debt","significant debt","500 thousand","over 500","about 700","about 800","seven hundred thousand","eight hundred thousand"],
-  "$1,000,000+": ["over a million","over one million","above one million","more than one million","million plus","millions","huge debt","massive debt","very large","major debt","multi million","several million","two million","three million"],
-  // Q3: How long outstanding
-  "Less than 6 months": ["less than 6 months","under 6 months","under six months","less than six","recent","new debt","just started","few months","couple months","couple of months","a month","two months","three months"],
-  "6 to 12 months": ["6 to 12 months","six to twelve months","half a year","about a year","six months to a year","around a year","half year","9 months","nine months","10 months","eleven months"],
-  "More than 2 years": ["more than 2 years","over two years","over 2 years","more than two years","several years","long standing","many years","3 years","4 years","5 years","ages"],
-  // Q4: ATO notices
-  "None": ["none","nothing","no notices","haven't received","no letters","no notice","haven't had any","i haven't received any","not yet","nothing yet","no not yet"],
-  "Overdue notice": ["overdue","overdue notice","payment overdue","late notice","late payment"],
-  "ATO Garnishee": ["garnishee","garnish","garnishing","garnishing notice","garnish she","gana she","bank garnishee","they garnished","garnished my account","frozen account","account frozen","ato","ato garnishee","tax office","tax office garnishee"],
-  "Statutory demand": ["statutory","statutory demand","formal demand","section 459","strategy","strategy remained","strategy demand"],
-  "Wind-up notice": ["wind up","winding up","wind-up","closure notice","windup","winding up notice"],
-  "Bankruptcy notice": ["bankruptcy","bankrupt","bankruptcy notice","insolvency notice","insolvency"],
-  // Q5: BAS returns (renamed: removed "Yes - " prefix)
-  "All current": ["all current","yes all current","fully lodged","all up to date","yes current","up to date","all done","completely current","all lodged and current","yes they are","yeah all current","yeah up to date"],
-  "Mostly current": ["mostly","mostly current","almost current","nearly current","mostly done","pretty much","mostly yes","almost"],
+  "Company": ["company","pty ltd","pty","proprietary","corporation","corp","limited company","my company"],
+  "Trust": ["trust","family trust","unit trust","discretionary trust","trust structure"],
+  // DX-3: Debt duration
+  "Less than 12 months": ["less than 12","under 12","under a year","less than a year","recent","new debt","just started","few months","couple months","six months","under six months","9 months","about a year"],
+  "1 \u2013 2 years": ["1 to 2","one to two","about a year","year and a half","18 months","about two years","couple of years","a year or two"],
+  "2 \u2013 5 years": ["2 to 5","two to five","few years","several years","about three","three years","four years","about 3","about 4","a while"],
+  "5+ years": ["5 plus","over 5","more than 5","over five","long time","ages","many years","long standing","been going on for years"],
+  // DX-4: BAS returns
+  "Unsure": ["unsure","not sure","don't know","uncertain","maybe","possibly","not certain","no idea","i'm not sure","what's that"],
   "Partially lodged": ["partial","partially","some lodged","partially lodged","some done","mixed","half done","some of them"],
-  "Not current": ["not current","behind","not lodged","outstanding","not done","overdue lodgements","way behind","haven't done them","nah"],
-  // Q6: Income tax returns
-  "Lodgements up to date": ["lodgements up to date","up to date","all lodged","fully lodged","all done","all up to date","current","all filed","complete","yep all done","yes all lodged","fully lodged","all done","all up to date","current","all filed","complete","yep all done","yes all lodged"],
-  "Minor arrears": ["minor arrears","minor","small arrears","small","slightly behind","one or two years","a little behind","minor behind","just a bit","small","minor","minor arrears","small arrears","slightly behind","one or two years","a little behind","minor behind","just a bit"],
-  "Major arrears": ["major arrears","major","significant arrears","significant","large arrears","large","multiple years","several behind","quite behind","really behind","very behind"],
-  "Never lodged": ["never","never lodged","not filed","none lodged","never done","haven't ever","never have"],
-  // Q7: Payment plan history (renamed: removed "Yes - " prefix)
-  "No payment plan": ["no","no payment plan","nope","negative","no i haven't","have not","no i have not","haven't","i don't","i do not","no i don't","nah","nope never","no plan","never had a plan","no payment","not attempted"],
-  "Successful": ["successful","yes successful","worked","yes it worked","previous plan worked","was successful","it worked","they accepted it","had a successful one"],
-  "Defaulted": ["defaulted","fulton","faulted","default","yes defaulted","broke the plan","failed plan","yes failed","did default","couldn't keep up","fell behind on it","defaulted on it"],
-  "Attempted - rejected": ["rejected","was rejected","they said no","rejected attempt","denied","turned down","they wouldn't accept","they refused"],
-  // Q8: Director
-  "Yes I am": ["yes","yes i am","yep","correct","that's right","affirmative","i am","i do","yeah","yep that's right","yeah i am","that's me","yes i'm a director","i am a director","yes director"],
-  "Recently resigned": ["recently resigned","just resigned","resigned recently","stepped down recently","just stepped down","resigned last month","recently stepped down"],
-  "No I'm not": ["no","no i'm not","nope","not a director","no i am not","nah","negative","i'm not","not me","no not a director"],
-  // Q9: DPN (renamed: "Yes - lockdown" → "Lockdown DPN", "Yes - non-lockdown" → "Non-lockdown DPN")
-  "No DPN received": ["no","no dpn","no dpn received","nope","haven't received","not received","no notice","no penalty","no penalty notice","nah","negative","none","no i haven't"],
-  "Lockdown DPN": ["lockdown","lockdown dpn","locked down dpn","locked dpn","lockdown one","the lockdown one","yes lockdown"],
-  "Non-lockdown DPN": ["non lockdown","non-lockdown","not lockdown","non lockdown dpn","non-lockdown dpn","unlocked dpn","the other one","non lockdown one","yes non lockdown"],
-  "Unsure": ["unsure","not sure","don't know","uncertain","maybe","possibly","not certain","no idea","i'm not sure","i am not sure","what's that","what is that","don't understand"],
-  // Q10: Personal liabilities
-  "No liabilities": ["no","no liabilities","nope","none","no guarantees","no personal","nothing","nah","negative","no i don't","don't have any"],
-  "Small amount": ["small amount","small","minor","small","not much","minimal","little bit","not a lot","minor amount","a little","just a bit"],
-  "Significant": ["significant","substantial","considerable","quite a lot","a lot","significant amount","heaps","plenty"],
-  "Major liabilities": ["major liabilities","major","liabilities","major liability","overwhelming","too much","can't cope","massive","enormous","crushing","overwhelmed","it's overwhelming","drowning","buried"],
-  // Q11: Monthly contribution (renamed: hyphen → "to")
-  "Under $500": ["under 500","less than 500","under five hundred","not much","small amount","minimal","under 500 dollars","a few hundred","couple hundred"],
-  "$500 to $1,500": ["500 to 1500","five hundred to fifteen hundred","around a thousand","about 1000","thousand","about a thousand","a grand","about a grand"],
-  "$1,500 to $3,000": ["1500 to 3000","fifteen hundred to three thousand","couple thousand","about 2000","two thousand","about two grand","couple grand","15000","fifteen hundred","1500","about fifteen hundred"],
-  "Over $3,000": ["over 3000","more than 3000","over three thousand","three thousand plus","more than three","5000","4000","five thousand","ten thousand","over three grand","above 3000","3000 plus","over 3"],
-  // Q12: Payment timeframe
-  "Less than a year": ["less than a year","under a year","under 12","less than 12","under a year","short term","quick","within a year","under twelve months","as fast as possible","quickly","listen to you","listen to","listen"],
-  "1 to 2 years": ["1 to 2 years","one to two years","one or two years","about a year","year and a half","18 months","eighteen months","about two years","12 to 24","year or two","12 24","a couple of years"],
-  "2 to 3 years": ["2 to 3 years","two to three years","24 to 36","two to three years","couple of years","two three years","thirty months","24 36","about three years"],
-  "Over 3 years": ["over 3 years","over three years","over 36","more than 3 years","long term","three years plus","long plan","extended","over 3 years","as long as possible","maximum time"],
-  // Q13: Business income stability
-  "Growing": ["growing","growth","increasing","going up","expanding","good","improving","business is growing","getting better","on the up"],
-  "Stable": ["stable","steady","consistent","same","holding","neutral","flat","staying the same","not changing"],
-  "Declining": ["declining","going down","decreasing","less revenue","falling","worse","dropping","it's declining","getting worse","struggling"],
-  "No income": ["no income","no revenue","nothing coming in","no money","stopped","closed","zero income","we have no income","nothing","zero"],
-  // Q14: Primary goal
-  "Keep business trading": ["keep trading","stay open","continue trading","keep operating","stay in business","keep going","i want to keep trading","keep it going","save the business"],
-  "Negotiate debt reduction": ["reduce debt","debt reduction","negotiate reduction","lower the debt","settle for less","reduce the amount","negotiate","negotiate debt","get a reduction","pay less","reduce"],
-  "Wind down responsibly": ["wind down","close responsibly","shut down","wind up","close business","orderly closure","wind it down","responsibly wind down","close it down"],
-  "Avoid bankruptcy": ["avoid bankruptcy","not go bankrupt","stay out of bankruptcy","prevent bankruptcy","no bankruptcy","avoid going bankrupt","don't want bankruptcy","scared of bankruptcy"],
-  // Q15: Urgency
-  "Planning ahead": ["planning ahead","early stages","just planning","proactive","not urgent","being prepared","just planning ahead","thinking ahead","getting prepared","preparation"],
-  "Moderate urgency": ["moderate","moderate urgency","somewhat urgent","fairly urgent","getting urgent","reasonably urgent","kind of urgent","becoming urgent","moderately urgent","not too urgent","medium","medium urgency","in between"],
-  "Very urgent": ["very urgent","urgent","high urgency","really urgent","quite urgent","super urgent","extremely urgent","need help soon","need help now","pressing","desperate","time sensitive","running out of time","asap"],
-  "ATO Action": ["ato action","critical","threatening","ato threatening","legal action","emergency","crisis","imminent","ato is threatening","they are threatening","they're going to","court","tribunal","enforcement","ato","action"],
+  "Lodged and up to date": ["lodged","up to date","all current","yes all current","fully lodged","all done","completely current","all lodged","yes current","yeah all current"],
+  "Never lodged": ["never","never lodged","not filed","none lodged","never done","haven't ever","never have","not done","not lodged"],
+  // DX-5: Superannuation
+  "Yes": ["yes","yep","yeah","there is","outstanding super","super owing","behind on super","owe super","yes there is"],
+  "No": ["no","nope","nah","no super owing","super is current","all paid","super paid","no outstanding","negative"],
+  // DX-6: Income tax returns (same option text as DX-4, aliases reused automatically)
+  // DX-7: Payment plan
+  "Never": ["never","no","nope","haven't","no payment plan","no i haven't","not attempted","never had","no plan","nah"],
+  "In current payment plan": ["current plan","in a plan","currently paying","active plan","yes current","paying now","on a plan","have a plan"],
+  "Yes but defaulted": ["defaulted","default","broke the plan","failed","couldn't keep up","fell behind","defaulted on it","yes but defaulted"],
+  "Attempted but rejected": ["rejected","was rejected","they said no","denied","turned down","refused","they wouldn't accept","attempted but rejected"],
+  // DX-8: Director/individual
+  "Yes, I am": ["yes","yes i am","yep","correct","that's right","i am","yeah","that's me","yes director","i am the director","yes i'm the director"],
+  "No, I'm not": ["no","no i'm not","nope","not a director","no i am not","nah","negative","i'm not","not me"],
+  // DX-9: Monthly contribution
+  "Yes, I can": ["yes","yes i can","yep","i can","definitely","of course","absolutely","yes i can contribute","i can pay","i can afford it"],
+  "No, I can't": ["no","no i can't","nope","can't afford","nothing","zero","no capacity","i can't","not able","unable","negative"],
+  "Potentially / Maybe": ["maybe","potentially","perhaps","possibly","depends","not sure","might be able","could possibly","it depends","uncertain"],
+  // DX-10: Payment timeframe
+  "Up to 1 year": ["up to a year","under a year","within a year","12 months","less than a year","short term","quickly","as fast as possible"],
+  "1 \u2013 2 years": ["1 to 2","one to two","about two years","year and a half","18 months","couple of years","a year or two"],
+  "2 \u2013 3 years": ["2 to 3","two to three","about three years","couple of years","thirty months","24 to 36","longer term"],
+  // DX-11: Income trending
+  "Growing": ["growing","growth","increasing","going up","expanding","improving","getting better","on the up","good"],
+  "Stable": ["stable","steady","consistent","same","holding","flat","staying the same","not changing","neutral"],
+  "Declining": ["declining","going down","decreasing","falling","worse","dropping","getting worse","struggling","less revenue"],
+  // DX-12: Urgency
+  "Not yet urgent / planning ahead": ["not urgent","planning ahead","early stages","just planning","proactive","being prepared","thinking ahead","preparation","not yet urgent"],
+  "Moderate urgency": ["moderate","somewhat urgent","fairly urgent","getting urgent","reasonably urgent","kind of urgent","medium","in between","moderately"],
+  "Very urgent": ["very urgent","urgent","really urgent","super urgent","extremely urgent","need help now","desperate","critical","time sensitive","asap","emergency","pressing"],
 }
-
 
 // ── MATCHING FUNCTIONS (module scope — not recreated per render) ──
 
