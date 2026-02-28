@@ -100,7 +100,7 @@ export function Onboarding2() {
           </div>
 
           <div style={{ textAlign: "center" }}>
-            <button onClick={() => { window.location.href = 'https://ascend-membership.flutterflow.app/page001ASignin' }} style={{ height: "48px", background: BTN_COLOR, color: WHITE, border: "none", borderRadius: "24px", padding: "0 56px", fontSize: "0.84rem", fontWeight: 600, cursor: "pointer", letterSpacing: "0.02em", fontFamily: FONT }}>{`Start Assessment \u2192`}</button>
+            <button onClick={() => { navigate('/onboarding-4q') }} style={{ height: "48px", background: BTN_COLOR, color: WHITE, border: "none", borderRadius: "24px", padding: "0 56px", fontSize: "0.84rem", fontWeight: 600, cursor: "pointer", letterSpacing: "0.02em", fontFamily: FONT }}>{`Start Assessment \u2192`}</button>
           </div>
           <div style={{ textAlign: "center", marginTop: "10px" }}>
             <button onClick={() => navigate('/onboarding-1')} style={{ background: "none", border: "none", color: MUTED, fontSize: "0.78rem", cursor: "pointer", textDecoration: "underline", textUnderlineOffset: "3px", fontFamily: FONT }}>{`\u2190 Back`}</button>

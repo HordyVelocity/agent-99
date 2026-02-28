@@ -4,6 +4,7 @@ import Page009 from './pages/page009/Page009'
 import { Welcome } from './pages/Welcome'
 import { Onboarding1 } from './pages/Onboarding1'
 import { Onboarding2 } from './pages/Onboarding2'
+import Onboarding4Q from './pages/Onboarding4Q'
 import { PostAssessmentVideo } from './pages/PostAssessmentVideo'
 import { Confirmation } from './pages/Confirmation'
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Welcome />} />
         <Route path="/onboarding-1" element={<Onboarding1 />} />
         <Route path="/onboarding-2" element={<Onboarding2 />} />
+        <Route path="/onboarding-4q" element={<Onboarding4Q />} />
         <Route
           path="/assessment"
           element={
